@@ -12,12 +12,12 @@
   <p align="center">
     BY TOLGA ZORLU
     <br />
-    <a href=""><strong>View Demo</strong></a>
+    <a href="https://leearn.space"><strong>Go to the Project!</strong></a>
     <br />
     <br />
-    <a href="">Report Bug</a>
+    <a href="https://github.com/tolgazorlu/leearn/issues/new">Report Bug</a>
     ·
-    <a href="">Request Feature</a>
+    <a href="https://github.com/tolgazorlu/leearn/issues/new">Request Feature</a>
   </p>
 </div>
 
@@ -47,9 +47,7 @@
 
 ## About The Project
 
-### English
-
-Leearn: Master Web3 Development with Ease
+### Leearn: Master Web3 Development with Ease
 
 Unlock the future of the web with Leearn, the premier platform for aspiring Web3 developers. Dive into comprehensive, expertly curated courses designed to take you from novice to expert. With daily updates, hands-on projects, and a vibrant community of learners, Leearn is your go-to resource for mastering blockchain technology, smart contracts, decentralized applications, and more. Join us today and start building the decentralized web of tomorrow!
 
@@ -154,7 +152,7 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/tolgazorlu/dailycode.git
+   git clone https://github.com/tolgazorlu/leearn.git
    ```
 2. Install client packages
    ```sh
