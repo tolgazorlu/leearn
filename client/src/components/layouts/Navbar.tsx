@@ -30,7 +30,7 @@ const Navbar = () => {
                                 to="/"
                                 aria-label="dacospace"
                             >
-                                Leearn
+                                leearn
                             </Link>
                             <div className="md:hidden">
                                 <button
@@ -78,21 +78,8 @@ const Navbar = () => {
                             id="navbar-collapse-with-animation"
                             className="hs-collapse hidden overflow-hidden transition-all duration-300 basis-full grow md:block"
                         >
-                            <div className="overflow-hidden overflow-y-auto max-h-[75vh] [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
+                            <div className="overflow-hidden overflow-y-auto py-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
                                 <div className="flex flex-col divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end py-2 md:py-0 md:ps-7 md:divide-y-0 md:divide-solid">
-                                    <Link
-                                        className="font-medium text-primary py-3 md:px-3 md:py-6"
-                                        to="/"
-                                        aria-current="page"
-                                    >
-                                        Landing
-                                    </Link>
-                                    <Link
-                                        className="font-medium text-gray-500 hover:text-gray-400 py-3 md:px-3 md:py-6"
-                                        to="/courses"
-                                    >
-                                        Courses
-                                    </Link>
                                     <div className="pt-3 md:pt-0 mr-4">
                                         <Button
                                             onClick={() => {
@@ -100,44 +87,48 @@ const Navbar = () => {
                                             }}
                                             variant={"default"}
                                         >
-                                            Signin
+                                            Get Started
                                         </Button>
                                     </div>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger asChild>
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                            >
-                                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                                <span className="sr-only">
-                                                    Toggle theme
-                                                </span>
-                                            </Button>
-                                        </DropdownMenuTrigger>
-                                        <DropdownMenuContent align="end">
-                                            <DropdownMenuItem
-                                                onClick={() =>
-                                                    setTheme("light")
-                                                }
-                                            >
-                                                Light
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                onClick={() => setTheme("dark")}
-                                            >
-                                                Dark
-                                            </DropdownMenuItem>
-                                            <DropdownMenuItem
-                                                onClick={() =>
-                                                    setTheme("system")
-                                                }
-                                            >
-                                                System
-                                            </DropdownMenuItem>
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    <div className="ml-2 mr-4">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    size="icon"
+                                                >
+                                                    <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                                    <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                                    <span className="sr-only">
+                                                        Toggle theme
+                                                    </span>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        setTheme("light")
+                                                    }
+                                                >
+                                                    Light
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        setTheme("dark")
+                                                    }
+                                                >
+                                                    Dark
+                                                </DropdownMenuItem>
+                                                <DropdownMenuItem
+                                                    onClick={() =>
+                                                        setTheme("system")
+                                                    }
+                                                >
+                                                    System
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </div>
                                 </div>
                             </div>
                         </div>
