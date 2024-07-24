@@ -6,7 +6,7 @@ import { CourseCard } from "@/components/Home/CourseCard";
 export default function Courses() {
     return (
         <>
-            <div className="h-full max-w-7xl mx-auto py-4">
+            <div className="h-full max-w-7xl mx-auto py-4 px-4">
                 <Tabs defaultValue="music" className="h-full space-y-6">
                     <TabsContent
                         value="music"
