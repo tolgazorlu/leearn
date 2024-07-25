@@ -7,5 +7,6 @@ const authController = require("../controllers/auth.controller"); // Import auth
 const router: Router = require("express").Router(); // Create a new router
 
 router.post("/signup", authController.Signup); // Create a new route for signup
+router.post("/signin", authController.Signin); // Create a new route for signin
 
 module.exports = router; // Export router

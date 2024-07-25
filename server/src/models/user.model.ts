@@ -31,6 +31,7 @@ const UserSchema: Schema = new Schema(
         avatar: { type: String },
         email: { type: String, required: true, unique: true },
         education: { type: String },
+        password: { type: String },
         job: { type: String },
         age: { type: Number },
         social_links: { SocialLinkSchema },

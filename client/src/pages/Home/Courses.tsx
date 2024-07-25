@@ -15,7 +15,7 @@ export default function Courses() {
                         <div className="flex items-center justify-between">
                             <div>
                                 <h2 className="text-3xl font-semibold tracking-tight">
-                                    Best Courses
+                                    Courses
                                 </h2>
                                 <p className="text-muted-foreground">
                                     Top picks for you. Updated daily.

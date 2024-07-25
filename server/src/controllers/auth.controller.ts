@@ -109,23 +109,35 @@ module.exports.Signin = async (
     try {
         const { email, password } = req.body;
 
-        if (!email) {
-            return sendErrorResponse(res, 400, "All fields are required!");
+        if (!email || !password) {
+            return res
+                .status(400)
+                .json({ message: "All fields are required!" });
         }
 
         const user = await UserModel.findOne({ email });
-
         if (!user) {
-            return sendErrorResponse(res, 400, "User not found!");
+            return res
+                .status(400)
+                .json({ message: "Incorrect email or invalid!" });
         }
 
-        if (user.password === password) {
-            return res.status(200).json({
-                success: true,
-                token: generateUserToken(user),
-                message: "User logged in successfully!",
-            });
+        if (!user.email_verified) {
+            return res
+                .status(400)
+                .json({ message: "First, you need to verify your email!" });
         }
+
+        const auth = await bcrypt.compare(password, user.password);
+        if (!auth) {
+            return res
+                .status(400)
+                .json({ message: "Incorrect password or invalid!" });
+        }
+
+        res.status(201).json({
+            token: generateUserToken(user),
+        });
         next();
     } catch (error) {
         res.status(400).json({

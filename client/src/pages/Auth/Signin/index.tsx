@@ -24,11 +24,13 @@ export default function SigninPage() {
                     <div className="relative z-20 mt-auto">
                         <blockquote className="space-y-2">
                             <p className="text-lg">
-                                &ldquo;This library has saved me countless hours
-                                of work and helped me deliver stunning designs
-                                to my clients faster than ever before.&rdquo;
+                                &ldquo; This project is a web3 platform that
+                                helps you improve your skills, learn new things,
+                                and grow your career. &rdquo;
                             </p>
-                            <footer className="text-sm">Sofia Davis</footer>
+                            <footer className="text-sm">
+                                Tolga Zorlu | Software Engineer{" "}
+                            </footer>
                         </blockquote>
                     </div>
                 </div>
@@ -39,7 +41,7 @@ export default function SigninPage() {
                                 Sign in to your account
                             </h1>
                             <p className="text-sm text-muted-foreground">
-                                Enter your email to sign in
+                                Enter your email and password to sign in
                             </p>
                         </div>
                         <UserSigninForm />
