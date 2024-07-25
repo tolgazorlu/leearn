@@ -10,7 +10,7 @@ export default function Hero() {
                 <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
                     <div>
                         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-                            Leearn: Improve your skills with web3 platform
+                            Leearn: Improve your skills, learn new things!
                         </h1>
                         <p className="mt-3 text-xl text-muted-foreground">
                             Leearn is a web3 platform that helps you improve
@@ -26,12 +26,8 @@ export default function Hero() {
                         {/* End Buttons */}
                     </div>
                     {/* Col */}
-                    <div className="relative ms-4">
-                        <img
-                            className="w-full"
-                            src={HeroImage}
-                            alt="Hero Image"
-                        />
+                    <div className="relative w-full">
+                        <img src={HeroImage} alt="Hero Image" />
                     </div>
                     {/* End Col */}
                 </div>

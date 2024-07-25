@@ -10,6 +10,6 @@ export default function TeacherRoute() {
     if (userInfo && userInfo.role == "teacher") {
         return <Outlet />;
     } else {
-        return <Navigate to="/login" />;
+        return <Navigate to="/auth/signin" />;
     }
 }

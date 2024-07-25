@@ -113,8 +113,14 @@ const Navbar = () => {
                                                     <DropdownMenuItem>
                                                         Profile
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        Billing
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            navigate(
+                                                                "/teacher/dashboard"
+                                                            );
+                                                        }}
+                                                    >
+                                                        Dashboard
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem>
                                                         Team

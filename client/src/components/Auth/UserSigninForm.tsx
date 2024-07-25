@@ -36,7 +36,7 @@ export function UserSigninForm({ className, ...props }: UserSigninFormProps) {
             console.log(data);
             if (data.token) {
                 setTimeout(() => {
-                    navigate(redirect || "/home");
+                    navigate(redirect || "/teacher/dashboard");
                 }, 3000);
                 dispatch({ type: "USER_SIGNIN", payload: data });
                 localStorage.setItem("userInfo", JSON.stringify(data));
