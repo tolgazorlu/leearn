@@ -8,7 +8,7 @@ export default function Hero() {
             <div className="container p-4 max-w-7xl mx-auto">
                 {/* Grid */}
                 <div className="grid md:grid-cols-2 gap-4 md:gap-8 xl:gap-20 md:items-center">
-                    <div>
+                    <div className="flex flex-col gap-2">
                         <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
                             Leearn: Improve your skills, learn new things!
                         </h1>

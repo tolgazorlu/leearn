@@ -1,6 +1,5 @@
 import {
     Box,
-    CircleUser,
     Home,
     LineChart,
     Menu,
@@ -11,7 +10,7 @@ import {
 } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Badge } from "../ui/badge";
 import {
     Card,
@@ -29,8 +28,21 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { useContext } from "react";
+import { User } from "@/contexts/User";
 
 const Header = () => {
+    const navigate = useNavigate();
+
+    const { dispatch } = useContext(User);
+
+    const SignoutHandler = () => {
+        dispatch({ type: "USER_SIGNOUT" });
+        localStorage.removeItem("userInfo");
+        window.location.href = "/auth/signin";
+    };
+
     return (
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
             <Sheet>
@@ -123,23 +135,31 @@ const Header = () => {
                 </form>
             </div>
             <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                    <Button
-                        variant="secondary"
-                        size="icon"
-                        className="rounded-full"
-                    >
-                        <CircleUser className="h-5 w-5" />
-                        <span className="sr-only">Toggle user menu</span>
-                    </Button>
+                <DropdownMenuTrigger>
+                    <Avatar>
+                        <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
+                <DropdownMenuContent>
                     <DropdownMenuLabel>My Account</DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem>Settings</DropdownMenuItem>
-                    <DropdownMenuItem>Support</DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>Logout</DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            navigate("/teacher/profile");
+                        }}
+                    >
+                        Profile
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            navigate("/teacher/dashboard");
+                        }}
+                    >
+                        Dashboard
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={SignoutHandler}>
+                        Sign Out
+                    </DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>
         </header>

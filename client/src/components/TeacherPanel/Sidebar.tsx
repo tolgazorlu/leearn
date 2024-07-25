@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/card";
 import { Link, useLocation } from "react-router-dom";
 
-import { Box, Home, Package, Users } from "lucide-react";
+import { Box, Home, Package, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const Sidebar = () => {
     const { pathname } = useLocation();
@@ -15,7 +15,10 @@ const Sidebar = () => {
     return (
         <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                <Link to="/" className="flex items-center gap-2 font-semibold">
+                <Link
+                    to="/"
+                    className="flex items-center gap-2 font-semibold text-primary"
+                >
                     <Box className="h-6 w-6" />
                     <span className="font-bandal text-2xl mt-1">leearn</span>
                 </Link>
@@ -55,6 +58,17 @@ const Sidebar = () => {
                     >
                         <Users className="h-4 w-4" />
                         Students
+                    </Link>
+                    <Link
+                        to="/teacher/profile"
+                        className={`${
+                            pathname == "/teacher/profile"
+                                ? "text-primary bg-muted"
+                                : "text-muted-foreground "
+                        } flex items-center gap-3 rounded-lg px-3 py-2  transition-all hover:text-primary`}
+                    >
+                        <Settings className="h-4 w-4" />
+                        Settings
                     </Link>
                 </nav>
             </div>

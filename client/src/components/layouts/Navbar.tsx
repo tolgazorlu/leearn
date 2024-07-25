@@ -1,4 +1,4 @@
-import { Moon, Sun } from "lucide-react";
+import { Box, Moon, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -41,11 +41,14 @@ const Navbar = () => {
                     <div className="relative md:flex md:items-center md:justify-between">
                         <div className="flex items-center justify-between">
                             <Link
-                                className="flex-none text-3xl font-semibold font-bandal"
+                                className="flex items-center gap-2 text-3xl font-semibold font-bandal text-primary"
                                 to="/"
                                 aria-label="dacospace"
                             >
-                                leearn
+                                <Box className="h-6 w-6" />
+                                <span className="mt-1 text-foreground">
+                                    leearn
+                                </span>
                             </Link>
                             <div className="md:hidden">
                                 <button
@@ -110,7 +113,13 @@ const Navbar = () => {
                                                         My Account
                                                     </DropdownMenuLabel>
                                                     <DropdownMenuSeparator />
-                                                    <DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={() => {
+                                                            navigate(
+                                                                "/teacher/profile"
+                                                            );
+                                                        }}
+                                                    >
                                                         Profile
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
@@ -121,9 +130,6 @@ const Navbar = () => {
                                                         }}
                                                     >
                                                         Dashboard
-                                                    </DropdownMenuItem>
-                                                    <DropdownMenuItem>
-                                                        Team
                                                     </DropdownMenuItem>
                                                     <DropdownMenuItem
                                                         onClick={SignoutHandler}
