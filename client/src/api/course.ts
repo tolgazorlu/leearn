@@ -26,8 +26,22 @@ export const useGetCoursesQuery = () =>
             (await apiClient.get<CourseType[]>(`course/all`)).data,
     });
 
+export const useGetSingleCourseQuery = (slug: string) =>
+    useQuery({
+        queryKey: ["single-course", slug],
+        queryFn: async () =>
+            (await apiClient.get<CourseType>(`course/${slug}`)).data,
+    });
+
 export const useDeleteCourseMutation = () =>
     useMutation({
         mutationFn: async ({ slug }: { slug: string }) =>
             (await apiClient.delete<CourseType>(`course/delete/${slug}`)).data,
+    });
+
+export const useGetLessonsFromCourseQuery = (slug: string) =>
+    useQuery({
+        queryKey: ["course-lessons", slug],
+        queryFn: async () =>
+            (await apiClient.get<CourseType[]>(`/course/${slug}/lessons`)).data,
     });

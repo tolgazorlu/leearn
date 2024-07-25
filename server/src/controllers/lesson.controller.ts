@@ -1,22 +1,31 @@
 import { NextFunction, Request, Response } from "express";
 import { CourseModel } from "../models/course.model";
 import slugify from "slugify";
+import { LessonModel } from "../models/lesson.model";
 
-module.exports.CreateNewCourse = async (
+module.exports.CreateNewLesson = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
     try {
-        const { title, description } = req.body;
+        const { title, content } = req.body;
 
-        const course = await CourseModel.create({
-            title: title,
-            description: description,
+        const course = await CourseModel.findOne({
+            slug: req.params.course_slug,
+        });
+
+        const lesson = await LessonModel.create({
+            title,
+            content,
             slug: slugify(title, { lower: true }),
-        }); // Create a new user
+        });
 
-        res.status(201).send(course);
+        if (course) {
+            course?.lessons.push({ lesson });
+        }
+
+        res.status(201).send(lesson);
     } catch (error) {
         res.status(400).json({
             success: false,
@@ -34,39 +43,6 @@ module.exports.GetCourses = async (
         const courses = await CourseModel.find(); // Find all courses
 
         res.status(200).send(courses);
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: error,
-        }); // 400 Bad Request
-    }
-};
-module.exports.GetSingleCourse = async (req: Request, res: Response) => {
-    try {
-        const course = await CourseModel.findOne({
-            slug: req.params.course_slug,
-        }); // Find course
-
-        return res.status(200).send(course);
-    } catch (error) {
-        res.status(400).json({
-            success: false,
-            message: error,
-        }); // 400 Bad Request
-    }
-};
-
-module.exports.GetLessonsFromCourse = async (req: Request, res: Response) => {
-    try {
-        const course = await CourseModel.findOne({
-            slug: req.params.course_slug,
-        }).populate({
-            path: "lessons",
-        });
-
-        console.log(course);
-
-        return res.status(200).send(course);
     } catch (error) {
         res.status(400).json({
             success: false,

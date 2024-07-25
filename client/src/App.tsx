@@ -6,6 +6,7 @@ import TeacherRoute from "./routes/TeacherRoute";
 import { TeacherDashboard } from "./pages/TeacherPanel";
 import { CoursesPage } from "./pages/TeacherPanel/Course";
 import { ProfilePage } from "./pages/TeacherPanel/Profile";
+import { EditCourse } from "./pages/TeacherPanel/EditCourse";
 function App() {
     return (
         <BrowserRouter>
@@ -17,7 +18,7 @@ function App() {
                     <Route path="dashboard" element={<TeacherDashboard />} />
                     <Route path="courses" element={<CoursesPage />} />
                     <Route path="profile" element={<ProfilePage />} />
-                    <Route path="course/edit/:slug" element={<ProfilePage />} />
+                    <Route path="course/edit/:slug" element={<EditCourse />} />
                 </Route>
 
                 {/* Catch-all route */}

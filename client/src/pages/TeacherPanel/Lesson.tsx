@@ -44,7 +44,7 @@ import {
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useNavigate } from "react-router-dom";
 
-export function CoursesPage() {
+export function LessonPage() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
@@ -53,8 +53,6 @@ export function CoursesPage() {
     const { mutateAsync: createCourse } = useCreateNewCourseMutation();
     const { mutateAsync: deleteCourse } = useDeleteCourseMutation();
     const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
-
-    console.log(courses);
 
     async function handleCreateNewCourse(event: React.SyntheticEvent) {
         event.preventDefault();
