@@ -137,6 +137,8 @@ module.exports.Signin = async (
 
         res.status(201).json({
             token: generateUserToken(user),
+            role: user.role,
+            email: user.email,
         });
         next();
     } catch (error) {

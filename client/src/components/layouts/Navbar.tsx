@@ -5,15 +5,30 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useTheme } from "@/components/theme-provider";
 import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { User } from "@/contexts/User";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 const Navbar = () => {
     const navigate = useNavigate();
 
     const { setTheme } = useTheme();
+
+    const { state, dispatch } = useContext(User);
+
+    const { userInfo } = state;
+
+    const SignoutHandler = () => {
+        dispatch({ type: "USER_SIGNOUT" });
+        localStorage.removeItem("userInfo");
+        window.location.href = "/auth/signin";
+    };
 
     return (
         <>
@@ -81,14 +96,46 @@ const Navbar = () => {
                             <div className="overflow-hidden overflow-y-auto py-4 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:rounded-full [&::-webkit-scrollbar-track]:bg-gray-100 [&::-webkit-scrollbar-thumb]:bg-gray-300">
                                 <div className="flex flex-col divide-y divide-dashed divide-gray-200 md:flex-row md:items-center md:justify-end py-2 md:py-0 md:ps-7 md:divide-y-0 md:divide-solid">
                                     <div className="pt-3 md:pt-0 mr-4">
-                                        <Button
-                                            onClick={() => {
-                                                navigate("/auth/signin");
-                                            }}
-                                            variant={"default"}
-                                        >
-                                            Get Started
-                                        </Button>
+                                        {userInfo ? (
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger>
+                                                    <Avatar>
+                                                        <AvatarFallback>
+                                                            CN
+                                                        </AvatarFallback>
+                                                    </Avatar>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent>
+                                                    <DropdownMenuLabel>
+                                                        My Account
+                                                    </DropdownMenuLabel>
+                                                    <DropdownMenuSeparator />
+                                                    <DropdownMenuItem>
+                                                        Profile
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        Billing
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem>
+                                                        Team
+                                                    </DropdownMenuItem>
+                                                    <DropdownMenuItem
+                                                        onClick={SignoutHandler}
+                                                    >
+                                                        Sign Out
+                                                    </DropdownMenuItem>
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        ) : (
+                                            <Button
+                                                onClick={() => {
+                                                    navigate("/auth/signin");
+                                                }}
+                                                variant={"default"}
+                                            >
+                                                Get Started
+                                            </Button>
+                                        )}
                                     </div>
                                     <div className="ml-2 mr-4">
                                         <DropdownMenu>
