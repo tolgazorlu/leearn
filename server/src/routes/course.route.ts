@@ -8,5 +8,6 @@ const router: Router = require("express").Router(); // Create a new router
 
 router.post("/create", courseController.CreateNewCourse); // Create a new route for signup
 router.get("/all", courseController.GetCourses); // Create a new route for signup
+router.delete("/delete/:slug", courseController.DeleteCourse); // Delete a course
 
 module.exports = router; // Export router

@@ -25,3 +25,9 @@ export const useGetCoursesQuery = () =>
         queryFn: async () =>
             (await apiClient.get<CourseType[]>(`course/all`)).data,
     });
+
+export const useDeleteCourseMutation = () =>
+    useMutation({
+        mutationFn: async ({ slug }: { slug: string }) =>
+            (await apiClient.delete<CourseType>(`course/delete/${slug}`)).data,
+    });

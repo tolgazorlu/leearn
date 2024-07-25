@@ -13,7 +13,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { useCreateNewCourseMutation, useGetCoursesQuery } from "@/api/course";
+import {
+    useCreateNewCourseMutation,
+    useDeleteCourseMutation,
+    useGetCoursesQuery,
+} from "@/api/course";
 import { toast } from "@/components/ui/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Tabs } from "@/components/ui/tabs";
@@ -38,25 +42,54 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useNavigate } from "react-router-dom";
 
 export function CoursesPage() {
     const [title, setTitle] = useState<string>("");
     const [description, setDescription] = useState<string>("");
 
-    const { mutateAsync: createCourse } = useCreateNewCourseMutation();
-    const { data: courses, isLoading, error } = useGetCoursesQuery();
+    const navigate = useNavigate();
 
-    console.log(courses);
+    const { mutateAsync: createCourse } = useCreateNewCourseMutation();
+    const { mutateAsync: deleteCourse } = useDeleteCourseMutation();
+    const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
 
     async function handleCreateNewCourse(event: React.SyntheticEvent) {
         event.preventDefault();
         try {
-            await createCourse({ title, description });
+            const data = await createCourse({ title, description });
+            if (data) {
+                navigate(`/teacher/course/edit/${data.slug}`);
+            }
             toast({
                 variant: "default",
                 title: "Course Created!",
                 description:
                     "Your course has been created successfully. You can now add lessons to it.",
+            });
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "Upps! Something went wrong.",
+                description: `${error}`,
+            });
+        }
+    }
+
+    async function handleDeleteCourse(
+        event: React.SyntheticEvent,
+        slug: string
+    ) {
+        event.preventDefault();
+        try {
+            const data = await deleteCourse({ slug });
+            console.log(data);
+            refetch();
+            toast({
+                variant: "default",
+                title: "Course Deleted!",
+                description: "Your course has been deleted successfully.",
             });
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -282,10 +315,25 @@ export function CoursesPage() {
                                                                                     <DropdownMenuLabel>
                                                                                         Actions
                                                                                     </DropdownMenuLabel>
-                                                                                    <DropdownMenuItem>
+                                                                                    <DropdownMenuItem
+                                                                                        onClick={() => {
+                                                                                            navigate(
+                                                                                                `/teacher/course/edit/${item.slug}`
+                                                                                            );
+                                                                                        }}
+                                                                                    >
                                                                                         Edit
                                                                                     </DropdownMenuItem>
-                                                                                    <DropdownMenuItem>
+                                                                                    <DropdownMenuItem
+                                                                                        onClick={(
+                                                                                            e
+                                                                                        ) => {
+                                                                                            handleDeleteCourse(
+                                                                                                e,
+                                                                                                item.slug
+                                                                                            );
+                                                                                        }}
+                                                                                    >
                                                                                         Delete
                                                                                     </DropdownMenuItem>
                                                                                 </DropdownMenuContent>

@@ -16,7 +16,8 @@ function App() {
                 <Route path="/teacher" element={<TeacherRoute />}>
                     <Route path="dashboard" element={<TeacherDashboard />} />
                     <Route path="courses" element={<CoursesPage />} />
-                    <Route path="profile" element={<ProfilePage />}></Route>
+                    <Route path="profile" element={<ProfilePage />} />
+                    <Route path="course/edit/:slug" element={<ProfilePage />} />
                 </Route>
 
                 {/* Catch-all route */}
