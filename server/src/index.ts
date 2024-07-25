@@ -1,5 +1,6 @@
 const express = require("express"); // IMPORT EXPRESS - Express is a super easy backend framework for NodeJS
 const authRoute = require("./routes/auth.route"); // IMPORT USER AUTH ROUTE
+const courseRoute = require("./routes/course.route"); // IMPORT USER AUTH ROUTE
 
 const app = express();
 const cors = require("cors");
@@ -25,6 +26,7 @@ app.use(express.json());
 app.use("/v1/auth/", authRoute);
 
 // * ROUTES
+app.use("/v1/course/", courseRoute);
 
 // GET PORT number from config/keys.ts
 const keys = require("./config/keys");
