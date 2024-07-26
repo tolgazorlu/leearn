@@ -67,13 +67,13 @@ module.exports.GetCourses = async (
     }
 };
 
-module.exports.DeleteCourse = async (req: Request, res: Response) => {
+module.exports.DeleteLesson = async (req: Request, res: Response) => {
     try {
-        const course = await CourseModel.findOneAndDelete({
+        const lesson = await LessonModel.findOneAndDelete({
             slug: req.params.slug,
-        }); // Find and delete a course
+        }); // Find and delete a lesson
 
-        res.status(200).send(course);
+        res.status(200).send(lesson);
     } catch (error) {
         res.status(400).json({
             success: false,

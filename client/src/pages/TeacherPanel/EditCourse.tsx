@@ -41,13 +41,17 @@ import {
 } from "@/components/ui/table";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
-import { useCreateNewLessonMutation } from "@/api/lesson";
+import {
+    useCreateNewLessonMutation,
+    useDeleteLessonMutation,
+} from "@/api/lesson";
 import { LessonType } from "@/types/lesson";
 
 export function EditCourse() {
     const { slug } = useParams<{ slug: string }>();
     const { data: course } = useGetSingleCourseQuery(slug!);
     const { data: courseDataForLesson } = useGetLessonsFromCourseQuery(slug!);
+    const { mutateAsync: deleteLesson } = useDeleteLessonMutation();
 
     const [lessonTitle, setLessonTitle] = useState("");
     const [lessonContent, setLessonContent] = useState("");
@@ -70,6 +74,20 @@ export function EditCourse() {
                 content: lessonContent,
                 course_slug: slug!,
             });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleDeleteLesson = async (
+        event: React.SyntheticEvent,
+        slug: string
+    ) => {
+        console.log("delete");
+
+        event.preventDefault();
+        try {
+            await deleteLesson({ lesson_slug: slug });
         } catch (error) {
             console.log(error);
         }
@@ -293,7 +311,16 @@ export function EditCourse() {
                                                                                 <DropdownMenuItem>
                                                                                     Edit
                                                                                 </DropdownMenuItem>
-                                                                                <DropdownMenuItem>
+                                                                                <DropdownMenuItem
+                                                                                    onClick={(
+                                                                                        e
+                                                                                    ) =>
+                                                                                        handleDeleteLesson(
+                                                                                            e,
+                                                                                            item.slug
+                                                                                        )
+                                                                                    }
+                                                                                >
                                                                                     Delete
                                                                                 </DropdownMenuItem>
                                                                             </DropdownMenuContent>

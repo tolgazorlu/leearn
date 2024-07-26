@@ -65,8 +65,6 @@ module.exports.GetLessonsFromCourse = async (req: Request, res: Response) => {
             path: "lessons",
         });
 
-        console.log(course);
-
         return res.status(200).send(course);
     } catch (error) {
         res.status(400).json({

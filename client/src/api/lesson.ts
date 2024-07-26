@@ -23,3 +23,10 @@ export const useCreateNewLessonMutation = () =>
                 )
             ).data,
     });
+
+export const useDeleteLessonMutation = () =>
+    useMutation({
+        mutationFn: async ({ lesson_slug }: { lesson_slug: string }) =>
+            (await apiClient.delete<LessonType>(`lesson/delete/${lesson_slug}`))
+                .data,
+    });
