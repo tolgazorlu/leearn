@@ -43,5 +43,5 @@ export const useGetLessonsFromCourseQuery = (slug: string) =>
     useQuery({
         queryKey: ["course-lessons", slug],
         queryFn: async () =>
-            (await apiClient.get<CourseType[]>(`/course/${slug}/lessons`)).data,
+            (await apiClient.get<CourseType>(`/course/${slug}/lessons`)).data,
     });

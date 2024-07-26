@@ -15,7 +15,7 @@ export const useCreateNewLessonMutation = () =>
         }) =>
             (
                 await apiClient.post<LessonType>(
-                    `course/create/${course_slug}`,
+                    `lesson/create/${course_slug}`,
                     {
                         title,
                         content,

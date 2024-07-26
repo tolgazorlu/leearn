@@ -11,9 +11,23 @@ module.exports.CreateNewLesson = async (
     try {
         const { title, content } = req.body;
 
+        if (!title || !content) {
+            return res.status(400).json({
+                success: false,
+                message: "Title and content are required.",
+            });
+        }
+
         const course = await CourseModel.findOne({
             slug: req.params.course_slug,
         });
+
+        if (!course) {
+            return res.status(404).json({
+                success: false,
+                message: "Course not found.",
+            });
+        }
 
         const lesson = await LessonModel.create({
             title,
@@ -21,11 +35,13 @@ module.exports.CreateNewLesson = async (
             slug: slugify(title, { lower: true }),
         });
 
-        if (course) {
-            course?.lessons.push({ lesson });
-        }
+        course.lessons.push(lesson._id);
+        await course.save(); // Save the updated course document
 
-        res.status(201).send(lesson);
+        res.status(201).send({
+            success: true,
+            lesson,
+        });
     } catch (error) {
         res.status(400).json({
             success: false,

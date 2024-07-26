@@ -1,4 +1,3 @@
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -42,19 +41,39 @@ import {
 } from "@/components/ui/table";
 import { TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useEffect, useState } from "react";
+import { useCreateNewLessonMutation } from "@/api/lesson";
+import { LessonType } from "@/types/lesson";
 
 export function EditCourse() {
     const { slug } = useParams<{ slug: string }>();
     const { data: course } = useGetSingleCourseQuery(slug!);
     const { data: courseDataForLesson } = useGetLessonsFromCourseQuery(slug!);
 
-    const [lessons, setLessons] = useState([]);
+    const [lessonTitle, setLessonTitle] = useState("");
+    const [lessonContent, setLessonContent] = useState("");
+
+    const { mutateAsync: createNewLesson } = useCreateNewLessonMutation();
+
+    const [lessons, setLessons] = useState<LessonType[]>([]);
 
     useEffect(() => {
         if (courseDataForLesson) {
             setLessons(courseDataForLesson.lessons);
         }
     }, [courseDataForLesson]);
+
+    const handleCreateNewLesson = async (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        try {
+            await createNewLesson({
+                title: lessonTitle,
+                content: lessonContent,
+                course_slug: slug!,
+            });
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     return (
         <>
@@ -160,7 +179,18 @@ export function EditCourse() {
                                                             </Label>
                                                             <Input
                                                                 id="title"
-                                                                value={"a"}
+                                                                name={
+                                                                    lessonTitle
+                                                                }
+                                                                value={
+                                                                    lessonTitle
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setLessonTitle(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
                                                                 className="col-span-3"
                                                             />
                                                         </div>
@@ -171,14 +201,31 @@ export function EditCourse() {
                                                             >
                                                                 Content
                                                             </Label>
-                                                            <Input
+                                                            <Textarea
                                                                 id="description"
+                                                                name={
+                                                                    lessonContent
+                                                                }
+                                                                value={
+                                                                    lessonContent
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setLessonContent(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
                                                                 className="col-span-3"
                                                             />
                                                         </div>
                                                     </div>
                                                     <DialogFooter>
-                                                        <Button type="submit">
+                                                        <Button
+                                                            type="submit"
+                                                            onClick={
+                                                                handleCreateNewLesson
+                                                            }
+                                                        >
                                                             Create
                                                         </Button>
                                                     </DialogFooter>
@@ -192,25 +239,11 @@ export function EditCourse() {
                                                 <Table>
                                                     <TableHeader>
                                                         <TableRow>
-                                                            <TableHead className="hidden w-[100px] sm:table-cell">
-                                                                <span>
-                                                                    Image
-                                                                </span>
-                                                            </TableHead>
                                                             <TableHead>
                                                                 Name
                                                             </TableHead>
                                                             <TableHead>
-                                                                Status
-                                                            </TableHead>
-                                                            <TableHead>
-                                                                Price
-                                                            </TableHead>
-                                                            <TableHead className="hidden md:table-cell">
-                                                                Total Sales
-                                                            </TableHead>
-                                                            <TableHead className="hidden md:table-cell">
-                                                                Created at
+                                                                Content
                                                             </TableHead>
                                                             <TableHead>
                                                                 <span className="sr-only">
@@ -225,34 +258,15 @@ export function EditCourse() {
                                                                 <TableRow
                                                                     key={index}
                                                                 >
-                                                                    <TableCell className="hidden sm:table-cell">
-                                                                        <img
-                                                                            alt="Product img"
-                                                                            className="aspect-square rounded-md object-cover"
-                                                                            height="64"
-                                                                            src="/placeholder.svg"
-                                                                            width="64"
-                                                                        />
-                                                                    </TableCell>
                                                                     <TableCell className="font-medium">
                                                                         {
                                                                             item.title
                                                                         }
                                                                     </TableCell>
-                                                                    <TableCell>
-                                                                        <Badge variant="outline">
-                                                                            Draft
-                                                                        </Badge>
-                                                                    </TableCell>
-                                                                    <TableCell>
-                                                                        $499.99
-                                                                    </TableCell>
                                                                     <TableCell className="hidden md:table-cell">
-                                                                        25
-                                                                    </TableCell>
-                                                                    <TableCell className="hidden md:table-cell">
-                                                                        2023-07-12
-                                                                        10:42 AM
+                                                                        {
+                                                                            item.content
+                                                                        }
                                                                     </TableCell>
                                                                     <TableCell>
                                                                         <DropdownMenu>

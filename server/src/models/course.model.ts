@@ -6,7 +6,7 @@ const CourseSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
         cover_image: { type: String },
-        slug: { type: String },
+        slug: { type: String, unique: true },
         description: { type: String },
         lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
         owner: { type: Schema.Types.ObjectId, ref: "User" },

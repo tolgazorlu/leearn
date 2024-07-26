@@ -5,7 +5,7 @@ import { ILesson } from "../types/lesson";
 const LessonSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
-        slug: { type: String },
+        slug: { type: String, unique: true },
         content: { type: String },
     },
     {
