@@ -18,6 +18,7 @@ export const Auth = (req: Request, res: Response, next: NextFunction) => {
             );
 
             req.user = decode as {
+                _id: string;
                 firstname: string;
                 lastname: string;
                 avatar: string;

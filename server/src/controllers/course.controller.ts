@@ -14,6 +14,7 @@ module.exports.CreateNewCourse = async (
             title: title,
             description: description,
             slug: slugify(title, { lower: true }),
+            owner: req.user._id,
         }); // Create a new user
 
         res.status(201).send(course);
