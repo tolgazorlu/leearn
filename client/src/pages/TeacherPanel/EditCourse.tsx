@@ -158,7 +158,7 @@ export function EditCourse() {
                                                         </span>
                                                     </Button>
                                                 </DialogTrigger>
-                                                <DialogContent className="sm:max-w-[425px]">
+                                                <DialogContent className="max-w-5xl">
                                                     <DialogHeader>
                                                         <DialogTitle>
                                                             Create New Lesson
@@ -202,6 +202,7 @@ export function EditCourse() {
                                                                 Content
                                                             </Label>
                                                             <Textarea
+                                                                rows={6}
                                                                 id="description"
                                                                 name={
                                                                     lessonContent
