@@ -8,20 +8,17 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { CourseType } from "@/types/course";
 
-export function CourseCard() {
+export function CourseCard({ course }: { course: CourseType }) {
     return (
         <Card>
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
                 <div className="space-y-1">
                     <CardTitle>
-                        <span className="text-primary">Patika</span>
+                        <span className="text-primary">{course.title}</span>
                     </CardTitle>
-                    <CardDescription>
-                        Beautifully designed components that you can copy and
-                        paste into your apps. Accessible. Customizable. Open
-                        Source.
-                    </CardDescription>
+                    <CardDescription>{course.description}</CardDescription>
                 </div>
                 <Button>Enroll</Button>
             </CardHeader>
@@ -29,7 +26,7 @@ export function CourseCard() {
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
                         <CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
-                        Patika Dev
+                        {course.firstname} {course.lastname}
                     </div>
                     <div className="flex items-center">
                         <StarIcon className="mr-1 h-3 w-3" />

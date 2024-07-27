@@ -32,7 +32,10 @@ module.exports.GetCourses = async (
     next: NextFunction,
 ) => {
     try {
-        const courses = await CourseModel.find(); // Find all courses
+        const courses = await CourseModel.find().populate(
+            "owner",
+            "-_id -email -password -role -enrolled_courses -email_verified -reset_password_expired -magic_link_expired -magic_link",
+        ); // Find all courses
 
         res.status(200).send(courses);
     } catch (error) {

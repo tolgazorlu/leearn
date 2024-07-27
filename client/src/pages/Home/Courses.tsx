@@ -1,9 +1,11 @@
 import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { listenNowAlbums } from "./data/albums";
 import { CourseCard } from "@/components/Home/CourseCard";
+import { useGetCoursesQuery } from "@/api/course";
 
 export default function Courses() {
+    const { data: courses } = useGetCoursesQuery();
+
     return (
         <>
             <div className="h-full max-w-7xl mx-auto py-4 px-4">
@@ -25,8 +27,8 @@ export default function Courses() {
                         <Separator className="my-4" />
                         <div className="relative">
                             <div className="grid md:grid-cols-2 gap-4">
-                                {listenNowAlbums.map(() => (
-                                    <CourseCard />
+                                {courses?.map((item, index) => (
+                                    <CourseCard course={item} key={index} />
                                 ))}
                             </div>
                         </div>

@@ -54,8 +54,6 @@ export function CoursesPage() {
     const { mutateAsync: deleteCourse } = useDeleteCourseMutation();
     const { data: courses, isLoading, error, refetch } = useGetCoursesQuery();
 
-    console.log(courses);
-
     async function handleCreateNewCourse(event: React.SyntheticEvent) {
         event.preventDefault();
         try {
