@@ -9,6 +9,8 @@ import { UserModel } from "../models/user.model"; // Import the UserModel
 import bcrypt from "bcrypt"; // Import bcrypt
 import { sendErrorResponse } from "../utils/errorUtils";
 import { generateUserToken } from "../utils/token";
+import axios from "axios";
+import { Message } from "node-mailjet";
 const { randomString } = require("../utils/randomString");
 const { verifyEmail, sendMagicLink } = require("../services/email");
 
@@ -139,11 +141,136 @@ module.exports.Signin = async (
             token: generateUserToken(user),
             role: user.role,
             email: user.email,
+            user_token: user.user_token,
+            encryption_key: user.encryption_key,
+            challange_id: user.challange_id,
+            user_app_id: user.user_app_id,
         });
         next();
     } catch (error) {
         res.status(400).json({
             message: error,
         });
+    }
+};
+
+module.exports.GetAppID = async (req: Request, res: Response) => {
+    try {
+        const options = {
+            method: "GET",
+            url: "https://api.circle.com/v1/w3s/config/entity",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+        };
+
+        const response = await axios.request(options);
+        const user = await UserModel.findById(req.user._id);
+        if (user) {
+            user.user_app_id = response.data.data.appId;
+            user.save();
+        }
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+module.exports.CreateWallet = async (req: Request, res: Response) => {
+    const options = {
+        method: "POST",
+        url: "https://api.circle.com/v1/w3s/users",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+        },
+        data: { userId: req.user._id },
+    };
+
+    try {
+        const response = await axios.request(options);
+
+        if (response.status === 201) {
+            res.status(201).json({
+                success: true,
+                message: "User Wallet Created Successfully!",
+            });
+        } else {
+            res.status(400).json({
+                success: true,
+                message: "Something went wrong!",
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            message: error,
+        });
+    }
+};
+
+module.exports.AcquireSessionToken = async (req: Request, res: Response) => {
+    const options = {
+        method: "POST",
+        url: "https://api.circle.com/v1/w3s/users/token",
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+        },
+        data: { userId: req.user._id },
+    };
+    try {
+        const response = await axios.request(options);
+        console.log("user token:", response.data.data.userToken);
+        console.log("encription key:", response.data.data.encryptionKey);
+        const user = await UserModel.findById(req.user._id);
+        if (user) {
+            user.user_token = response.data.data.userToken;
+            user.encryption_key = response.data.data.encryptionKey;
+
+            await user.save();
+        }
+    } catch (error) {
+        res.status(400).json({
+            message: error,
+        });
+    }
+};
+
+module.exports.InitializeUser = async (req: Request, res: Response) => {
+    const idempotencyKey = randomString(20);
+
+    try {
+        const user = await UserModel.findById(req.user._id);
+
+        const options = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/user/initialize",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer  ${user?._id}`,
+                "X-User-Token": `${user?.user_token}`,
+            },
+            data: {
+                idempotencyKey: idempotencyKey,
+                accountType: "SCA",
+                blockchains: ["MATIC-AMOY"],
+            },
+        };
+
+        const response = await axios.request(options);
+        console.log("response:", response);
+
+        if (user) {
+            user.challange_id = response.data.data.challengeId;
+            user.save();
+        }
+
+        res.status(200).json({
+            success: true,
+            message: "Challange ID created!",
+            data: response.data.data.challengeId,
+        });
+    } catch (error) {
+        console.error(error);
     }
 };

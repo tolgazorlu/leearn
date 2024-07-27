@@ -19,6 +19,10 @@ interface IUser extends Document {
     reset_password_expires?: Date;
     magic_link?: string;
     magic_link_expired: boolean;
+    user_token: string;
+    encryption_key: string;
+    challange_id: string;
+    user_app_id: string;
 }
 
 // Define the social link interface

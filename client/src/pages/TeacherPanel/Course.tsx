@@ -226,11 +226,6 @@ export function CoursesPage() {
                                                     <Table>
                                                         <TableHeader>
                                                             <TableRow>
-                                                                <TableHead className="hidden w-[100px] sm:table-cell">
-                                                                    <span>
-                                                                        Image
-                                                                    </span>
-                                                                </TableHead>
                                                                 <TableHead>
                                                                     Name
                                                                 </TableHead>
@@ -264,15 +259,6 @@ export function CoursesPage() {
                                                                             index
                                                                         }
                                                                     >
-                                                                        <TableCell className="hidden sm:table-cell">
-                                                                            <img
-                                                                                alt="Product img"
-                                                                                className="aspect-square rounded-md object-cover"
-                                                                                height="64"
-                                                                                src="/placeholder.svg"
-                                                                                width="64"
-                                                                            />
-                                                                        </TableCell>
                                                                         <TableCell className="font-medium">
                                                                             {
                                                                                 item.title

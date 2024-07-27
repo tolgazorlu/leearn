@@ -115,22 +115,36 @@ const Navbar = () => {
                                                     <DropdownMenuSeparator />
                                                     <DropdownMenuItem
                                                         onClick={() => {
-                                                            navigate(
-                                                                "/teacher/profile"
-                                                            );
+                                                            if (
+                                                                userInfo.role ==
+                                                                "teacher"
+                                                            ) {
+                                                                navigate(
+                                                                    "/teacher/profile"
+                                                                );
+                                                            } else {
+                                                                navigate(
+                                                                    "/learner/profile"
+                                                                );
+                                                            }
                                                         }}
                                                     >
                                                         Profile
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem
-                                                        onClick={() => {
-                                                            navigate(
-                                                                "/teacher/dashboard"
-                                                            );
-                                                        }}
-                                                    >
-                                                        Dashboard
-                                                    </DropdownMenuItem>
+                                                    {userInfo.role ==
+                                                    "teacher" ? (
+                                                        <DropdownMenuItem
+                                                            onClick={() => {
+                                                                navigate(
+                                                                    "/teacher/dashboard"
+                                                                );
+                                                            }}
+                                                        >
+                                                            Dashboard
+                                                        </DropdownMenuItem>
+                                                    ) : (
+                                                        <></>
+                                                    )}
                                                     <DropdownMenuItem
                                                         onClick={SignoutHandler}
                                                     >

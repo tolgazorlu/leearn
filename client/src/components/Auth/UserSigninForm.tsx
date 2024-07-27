@@ -22,7 +22,7 @@ export function UserSigninForm({ className, ...props }: UserSigninFormProps) {
 
     const { search } = useLocation();
     const redirectInUrl = new URLSearchParams(search).get("redirect");
-    const redirect = redirectInUrl ? redirectInUrl : "/home";
+    const redirect = redirectInUrl ? redirectInUrl : "/";
 
     const { mutateAsync: signin, isPending } = useSigninMutation();
 
