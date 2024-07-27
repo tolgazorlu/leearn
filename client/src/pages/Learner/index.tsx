@@ -221,11 +221,11 @@ export function Learner() {
                                 <CardDescription>
                                     <br />
                                     <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                                        Wallet ID: {wallet.wallet.userId}
+                                        Wallet ID: {wallet.wallet?.userId}
                                     </div>
                                     <br />
                                     <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                                        Wallet Address: {wallet.wallet.address}
+                                        Wallet Address: {wallet.wallet?.address}
                                     </div>
                                 </CardDescription>
                             </CardHeader>
