@@ -1,4 +1,6 @@
 export type UserInfo = {
+    firstname: string;
+    lastname: string;
     role: string;
     token: string;
     user_token: string;

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { ArrowUpRight, CircleUser, Menu, Box } from "lucide-react";
+import { ArrowUpRight, Menu, Box } from "lucide-react";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -29,14 +29,22 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { User } from "@/contexts/User";
 import { useInitializeUserMutation } from "@/api/auth";
 
 export function Learner() {
-    const { state } = useContext(User);
+    const navigate = useNavigate();
+
+    const { state, dispatch } = useContext(User);
     const { userInfo } = state;
+
+    const SignoutHandler = () => {
+        dispatch({ type: "USER_SIGNOUT" });
+        localStorage.removeItem("userInfo");
+        window.location.href = "/auth/signin";
+    };
 
     useEffect(() => {
         if (userInfo) {
@@ -56,8 +64,6 @@ export function Learner() {
         "wallet has not been created yet...!"
     );
     const [loading, setLoading] = useState(false);
-
-    console.log(userInfo);
 
     const { mutateAsync: initializeUser } = useInitializeUserMutation();
 
@@ -124,7 +130,7 @@ export function Learner() {
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
                 <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                     <Link
-                        to="#"
+                        to="/"
                         className="flex items-center gap-2 text-lg font-semibold md:text-base"
                     >
                         <Box className="h-6 w-6" />
@@ -177,25 +183,41 @@ export function Learner() {
                 <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
                     <form className="ml-auto flex-1 sm:flex-initial"></form>
                     <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button
-                                variant="secondary"
-                                size="icon"
-                                className="rounded-full"
-                            >
-                                <CircleUser className="h-5 w-5" />
-                                <span className="sr-only">
-                                    Toggle user menu
-                                </span>
-                            </Button>
+                        <DropdownMenuTrigger>
+                            <Avatar>
+                                <AvatarFallback>
+                                    {userInfo?.role[0]}
+                                </AvatarFallback>
+                            </Avatar>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
+                        <DropdownMenuContent>
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem>Support</DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Logout</DropdownMenuItem>
+                            <DropdownMenuItem
+                                onClick={() => {
+                                    if (userInfo?.role == "teacher") {
+                                        navigate("/teacher/profile");
+                                    } else {
+                                        navigate("/learner/profile");
+                                    }
+                                }}
+                            >
+                                Profile
+                            </DropdownMenuItem>
+                            {userInfo?.role == "teacher" ? (
+                                <DropdownMenuItem
+                                    onClick={() => {
+                                        navigate("/teacher/dashboard");
+                                    }}
+                                >
+                                    Dashboard
+                                </DropdownMenuItem>
+                            ) : (
+                                <></>
+                            )}
+                            <DropdownMenuItem onClick={SignoutHandler}>
+                                Sign Out
+                            </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>

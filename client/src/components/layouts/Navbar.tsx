@@ -104,7 +104,7 @@ const Navbar = () => {
                                                 <DropdownMenuTrigger>
                                                     <Avatar>
                                                         <AvatarFallback>
-                                                            CN
+                                                            {userInfo?.role[0]}
                                                         </AvatarFallback>
                                                     </Avatar>
                                                 </DropdownMenuTrigger>
