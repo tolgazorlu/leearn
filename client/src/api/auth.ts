@@ -39,22 +39,22 @@ export const useSignupMutation = () =>
 export const useCreateWalletMutation = () =>
     useMutation({
         mutationFn: async () =>
-            (await apiClient.post(`auth/create_wallet`, {})).data,
+            (await apiClient.post(`auth/create_wallet`)).data,
     });
 
-export const useGetAcquireSessionToken = () =>
-    useMutation({
-        mutationFn: async () =>
-            (await apiClient.post(`auth/acquire_session_token`, {})).data,
-    });
+// export const useGetAcquireSessionToken = () =>
+//     useMutation({
+//         mutationFn: async () =>
+//             (await apiClient.post(`auth/acquire_session_token`, {})).data,
+//     });
 
-export const useInitializeUserMutation = () =>
-    useMutation({
-        mutationFn: async () =>
-            (await apiClient.post(`auth/initialize_user`, {})).data,
-    });
+// export const useInitializeUserMutation = () =>
+//     useMutation({
+//         mutationFn: async () =>
+//             (await apiClient.post(`auth/initialize_user`, {})).data,
+//     });
 
-export const useGetAppIDMutation = () =>
-    useMutation({
-        mutationFn: async () => (await apiClient.post(`auth/app_id`, {})).data,
-    });
+// export const useGetAppIDMutation = () =>
+//     useMutation({
+//         mutationFn: async () => (await apiClient.post(`auth/app_id`, {})).data,
+//     });

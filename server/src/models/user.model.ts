@@ -47,7 +47,6 @@ const UserSchema: Schema = new Schema(
         magic_link: { type: String, default: uuidv4 },
         magic_link_expired: { type: Boolean, default: false },
         // Wallet
-        user_app_id: { type: String },
         user_token: { type: String },
         encryption_key: { type: String },
         challange_id: { type: String },

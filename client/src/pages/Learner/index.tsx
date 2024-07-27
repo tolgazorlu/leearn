@@ -30,9 +30,9 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { Link, useNavigate } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { User } from "@/contexts/User";
-import { useInitializeUserMutation } from "@/api/auth";
+import { useCreateWalletMutation } from "@/api/auth";
 
 export function Learner() {
     const navigate = useNavigate();
@@ -46,52 +46,39 @@ export function Learner() {
         window.location.href = "/auth/signin";
     };
 
-    useEffect(() => {
-        if (userInfo) {
-            setAppId(userInfo?.user_app_id);
-            setUserToken(userInfo?.user_app_id);
-            setEncryptionKey(userInfo?.user_app_id);
-            setChallengeId(userInfo?.challange_id);
-        }
-    }, [userInfo]);
-
-    const [appId, setAppId] = useState("");
-    const [userToken, setUserToken] = useState("");
-    const [encryptionKey, setEncryptionKey] = useState("");
-    const [challengeId, setChallengeId] = useState("");
-
     const [walletResult, setWalletResult] = useState(
         "wallet has not been created yet...!"
     );
     const [loading, setLoading] = useState(false);
 
-    const { mutateAsync: initializeUser } = useInitializeUserMutation();
+    const { mutateAsync: createWallet } = useCreateWalletMutation();
 
     const handleCreatWallet = async () => {
-        await initializeUser();
+        const data = await createWallet();
+        console.log(data);
         setLoading(false);
 
         const sdk = new W3SSdk({
             appSettings: {
-                appId: appId,
+                appId: data.app_id,
             },
         });
 
         sdk.setAuthentication({
-            userToken,
-            encryptionKey,
+            userToken: data.user_token,
+            encryptionKey: data.encryption_key,
         });
 
         console.log(sdk);
         console.log("set the app settings");
         sdk.setAuthentication({
-            userToken: userToken || "",
-            encryptionKey: encryptionKey || "",
+            userToken: data.user_token || "",
+            encryptionKey: data.encryption_key || "",
         });
         console.log("set the authentication");
         try {
-            console.log("Challange Id: ", challengeId);
-            sdk.execute(challengeId, (error, result) => {
+            console.log("Challange Id: ", data.challenge_id);
+            sdk.execute(data.challenge_id, (error, result) => {
                 console.log("INSIDE THE EXECUTE METHOD");
                 if (error) {
                     console.log(

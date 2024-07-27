@@ -11,7 +11,7 @@ router.post("/signup", authController.Signup); // Create a new route for signup
 router.post("/signin", authController.Signin); // Create a new route for signin
 router.post("/create_wallet", Auth, authController.CreateWallet);
 router.post("/app_id", Auth, authController.GetAppID);
-router.post("/acquire_session_token", Auth, authController.AcquireSessionToken);
-router.post("/initialize_user", Auth, authController.InitializeUser);
+// router.post("/acquire_session_token", Auth, authController.AcquireSessionToken);
+// router.post("/initialize_user", Auth, authController.InitializeUser);
 
 module.exports = router; // Export router

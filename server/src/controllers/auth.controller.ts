@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-
+const { v4: uuidv4 } = require("uuid");
 /**
  * @desc This file is used to define the auth controllers.
  */
@@ -154,7 +154,11 @@ module.exports.Signin = async (
     }
 };
 
-module.exports.GetAppID = async (req: Request, res: Response) => {
+module.exports.GetAppID = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
     try {
         const options = {
             method: "GET",
@@ -166,89 +170,54 @@ module.exports.GetAppID = async (req: Request, res: Response) => {
         };
 
         const response = await axios.request(options);
-        const user = await UserModel.findById(req.user._id);
-        if (user) {
-            user.user_app_id = response.data.data.appId;
-            user.save();
-        }
+
+        res.status(200).json({ appId: response.data.data.appId });
+
+        next();
     } catch (error) {
         console.error(error);
     }
 };
 
 module.exports.CreateWallet = async (req: Request, res: Response) => {
-    const options = {
-        method: "POST",
-        url: "https://api.circle.com/v1/w3s/users",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
-        },
-        data: { userId: req.user._id },
-    };
-
     try {
-        const response = await axios.request(options);
+        // const createWalletOption = {
+        //     method: "POST",
+        //     url: "https://api.circle.com/v1/w3s/users",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+        //     },
+        //     data: { userId: req.user._id },
+        // };
 
-        if (response.status === 201) {
-            res.status(201).json({
-                success: true,
-                message: "User Wallet Created Successfully!",
-            });
-        } else {
-            res.status(400).json({
-                success: true,
-                message: "Something went wrong!",
-            });
-        }
-    } catch (error) {
-        res.status(400).json({
-            message: error,
-        });
-    }
-};
+        // const createWalletRes = await axios.request(createWalletOption);
+        // console.log(createWalletRes);
 
-module.exports.AcquireSessionToken = async (req: Request, res: Response) => {
-    const options = {
-        method: "POST",
-        url: "https://api.circle.com/v1/w3s/users/token",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
-        },
-        data: { userId: req.user._id },
-    };
-    try {
-        const response = await axios.request(options);
-        console.log("user token:", response.data.data.userToken);
-        console.log("encription key:", response.data.data.encryptionKey);
-        const user = await UserModel.findById(req.user._id);
-        if (user) {
-            user.user_token = response.data.data.userToken;
-            user.encryption_key = response.data.data.encryptionKey;
+        const AcquireSessionTokenOption = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/users/token",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+            data: { userId: req.user._id },
+        };
 
-            await user.save();
-        }
-    } catch (error) {
-        res.status(400).json({
-            message: error,
-        });
-    }
-};
+        const acquireSessionRes = await axios.request(
+            AcquireSessionTokenOption,
+        );
+        const user_token = acquireSessionRes.data.data.userToken;
+        const encryption_key = acquireSessionRes.data.data.encryptionKey;
 
-module.exports.InitializeUser = async (req: Request, res: Response) => {
-    const idempotencyKey = randomString(20);
-
-    try {
-        const user = await UserModel.findById(req.user._id);
-
-        const options = {
+        const idempotencyKey = uuidv4();
+        const initializeUserOption = {
             method: "POST",
             url: "https://api.circle.com/v1/w3s/user/initialize",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer  ${user?._id}`,
-                "X-User-Token": `${user?.user_token}`,
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+                "X-User-Token": user_token,
             },
             data: {
                 idempotencyKey: idempotencyKey,
@@ -257,20 +226,109 @@ module.exports.InitializeUser = async (req: Request, res: Response) => {
             },
         };
 
-        const response = await axios.request(options);
-        console.log("response:", response);
+        const initializeUserRes = await axios.request(initializeUserOption);
+        const challenge_id = initializeUserRes.data.data.challengeId;
 
-        if (user) {
-            user.challange_id = response.data.data.challengeId;
-            user.save();
-        }
-
-        res.status(200).json({
-            success: true,
-            message: "Challange ID created!",
-            data: response.data.data.challengeId,
+        res.status(201).json({
+            app_id: process.env.CIRCLE_APP_ID,
+            user_token: user_token,
+            encryption_key: encryption_key,
+            challenge_id: challenge_id,
         });
     } catch (error) {
-        console.error(error);
+        if (axios.isAxiosError(error)) {
+            console.error(
+                "Axios error:",
+                error.response?.data || error.message,
+            );
+            res.status(error.response?.status || 500).json({
+                message: error.response?.data || error.message,
+            });
+        } else {
+            console.error("Unexpected error:", error);
+            res.status(500).json({
+                message: "An unexpected error occurred",
+            });
+        }
     }
 };
+
+// module.exports.AcquireSessionToken = async (req: Request, res: Response) => {
+//     const options = {
+//         method: "POST",
+//         url: "https://api.circle.com/v1/w3s/users/token",
+//         headers: {
+//             "Content-Type": "application/json",
+//             Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+//         },
+//         data: { userId: req.user._id },
+//     };
+//     try {
+//         const response = await axios.request(options);
+//         console.log("user token:", response.data.data.userToken);
+//         console.log("encription key:", response.data.data.encryptionKey);
+//         const user = await UserModel.findById(req.user._id);
+//         if (user) {
+//             user.user_token = response.data.data.userToken;
+//             user.encryption_key = response.data.data.encryptionKey;
+
+//             await user.save();
+//         }
+//     } catch (error) {
+//         res.status(400).json({
+//             message: error,
+//         });
+//     }
+// };
+
+// module.exports.InitializeUser = async (req: Request, res: Response) => {
+//     const idempotencyKey = uuidv4(); // generates an idempotency key
+//     try {
+//         const user = await UserModel.findById(req.user._id);
+
+//         if (!user) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "User not found",
+//             });
+//         }
+
+//         const options = {
+//             method: "POST",
+//             url: "https://api.circle.com/v1/w3s/user/initialize",
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+//                 "X-User-Token": user.user_token,
+//             },
+//             data: {
+//                 idempotencyKey: idempotencyKey,
+//                 accountType: "SCA",
+//                 blockchains: ["MATIC-AMOY"],
+//             },
+//         };
+
+//         console.log("Request Options:", options);
+
+//         const response = await axios.request(options);
+//         console.log("Response Data:", response.data);
+
+//         user.challange_id = response.data.data.challengeId;
+//         await user.save();
+
+//         res.status(200).json({
+//             success: true,
+//             message: "Challenge ID created!",
+//             data: response.data.data.challengeId,
+//         });
+//     } catch (error: any) {
+//         console.error(
+//             "Error:",
+//             error.response ? error.response.data : error.message,
+//         );
+//         res.status(500).json({
+//             success: false,
+//             message: "An error occurred while initializing the user.",
+//         });
+//     }
+// };
