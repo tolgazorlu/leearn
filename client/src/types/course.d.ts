@@ -7,4 +7,5 @@ export type CourseType = {
     description: string;
     slug: string;
     lessons: LessonType[];
+    price: number;
 };

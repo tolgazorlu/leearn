@@ -39,6 +39,27 @@ export const useDeleteCourseMutation = () =>
             (await apiClient.delete<CourseType>(`course/delete/${slug}`)).data,
     });
 
+export const useUpdateCourseMutation = (course_slug: string) =>
+    useMutation({
+        mutationFn: async ({
+            title,
+            price,
+            slug,
+            description,
+        }: {
+            title: string;
+            price: number;
+            slug: string;
+            description: string;
+        }) =>
+            (
+                await apiClient.put<CourseType>(
+                    `course/update/${course_slug}`,
+                    { title, price, slug, description }
+                )
+            ).data,
+    });
+
 export const useGetLessonsFromCourseQuery = (slug: string) =>
     useQuery({
         queryKey: ["course-lessons", slug],

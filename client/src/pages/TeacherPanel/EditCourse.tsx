@@ -9,6 +9,7 @@ import { useParams } from "react-router-dom";
 import {
     useGetLessonsFromCourseQuery,
     useGetSingleCourseQuery,
+    useUpdateCourseMutation,
 } from "@/api/course";
 
 import {
@@ -53,6 +54,10 @@ export function EditCourse() {
     const { data: courseDataForLesson } = useGetLessonsFromCourseQuery(slug!);
     const { mutateAsync: deleteLesson } = useDeleteLessonMutation();
 
+    const [title, setTitle] = useState(course?.title || "");
+    const [price, setPrice] = useState(course?.price || "");
+    const [description, setDescription] = useState(course?.description || "");
+
     const [lessonTitle, setLessonTitle] = useState("");
     const [lessonContent, setLessonContent] = useState("");
 
@@ -65,6 +70,14 @@ export function EditCourse() {
             setLessons(courseDataForLesson.lessons);
         }
     }, [courseDataForLesson]);
+
+    useEffect(() => {
+        if (course) {
+            setTitle(course.title);
+            setPrice(course.price);
+            setDescription(course.description);
+        }
+    }, [course, setTitle]);
 
     const handleCreateNewLesson = async (event: React.SyntheticEvent) => {
         event.preventDefault();
@@ -88,6 +101,22 @@ export function EditCourse() {
         event.preventDefault();
         try {
             await deleteLesson({ lesson_slug: slug });
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const { mutateAsync: updateCourse } = useUpdateCourseMutation(slug!);
+
+    const handleUpdateCourse = async (event: React.SyntheticEvent) => {
+        event.preventDefault();
+        try {
+            await updateCourse({
+                title: title,
+                price: typeof price === "string" ? parseInt(price) : price,
+                slug: slug,
+                description: description,
+            });
         } catch (error) {
             console.log(error);
         }
@@ -119,10 +148,26 @@ export function EditCourse() {
                                             </Label>
                                             <Input
                                                 id="title"
-                                                name={course?.title}
-                                                value={course?.title}
+                                                name="title"
+                                                value={title}
                                                 placeholder="Course Title"
-                                                onChange={(e) => e.target.value}
+                                                onChange={(e) =>
+                                                    setTitle(e.target.value)
+                                                }
+                                            />
+                                        </div>
+                                        <div className="grid gap-3">
+                                            <Label htmlFor="price">
+                                                Course Price
+                                            </Label>
+                                            <Input
+                                                id="price"
+                                                name="price"
+                                                value={price}
+                                                placeholder="Course Price"
+                                                onChange={(e) =>
+                                                    setPrice(e.target.value)
+                                                }
                                             />
                                         </div>
                                         <div className="grid gap-3">
@@ -132,9 +177,10 @@ export function EditCourse() {
                                             <Input
                                                 id="slug"
                                                 type="text"
-                                                name={course?.slug}
-                                                value={course?.slug}
+                                                name="slug"
+                                                value={slug}
                                                 placeholder="Course Slug"
+                                                readOnly
                                             />
                                         </div>
                                         <div className="grid gap-3">
@@ -143,12 +189,22 @@ export function EditCourse() {
                                             </Label>
                                             <Textarea
                                                 id="description"
-                                                name={course?.description}
-                                                value={course?.description}
+                                                name="description"
+                                                value={description}
                                                 placeholder="Course Description"
+                                                onChange={(e) =>
+                                                    setDescription(
+                                                        e.target.value
+                                                    )
+                                                }
                                             />
                                         </div>
-                                        <Button>Save</Button>
+                                        <Button
+                                            type="submit"
+                                            onClick={handleUpdateCourse}
+                                        >
+                                            Save
+                                        </Button>
                                     </fieldset>
                                 </form>
                             </div>

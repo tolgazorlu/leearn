@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { CourseModel } from "../models/course.model";
 import slugify from "slugify";
+import { Message } from "node-mailjet";
 
 module.exports.CreateNewCourse = async (
     req: Request,
@@ -84,6 +85,32 @@ module.exports.DeleteCourse = async (req: Request, res: Response) => {
         }); // Find and delete a course
 
         res.status(200).send(course);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: error,
+        }); // 400 Bad Request
+    }
+};
+
+module.exports.UpdateCourse = async (req: Request, res: Response) => {
+    try {
+        const { title, price, slug, description } = req.body;
+        const course = CourseModel.findOneAndUpdate(
+            { slug: req.params.slug },
+            {
+                title: title,
+                price: price,
+                slug: slug,
+                description: description,
+            },
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Course updated successfully!",
+            course,
+        });
     } catch (error) {
         res.status(400).json({
             success: false,

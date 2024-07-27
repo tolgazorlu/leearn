@@ -11,6 +11,7 @@ const CourseSchema: Schema = new Schema(
         lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
         owner: { type: Schema.Types.ObjectId, ref: "User" },
         learners: [{ type: Schema.Types.ObjectId, ref: "User" }],
+        price: { type: Number },
     },
     {
         timestamps: true,
