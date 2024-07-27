@@ -181,18 +181,18 @@ module.exports.GetAppID = async (
 
 module.exports.CreateWallet = async (req: Request, res: Response) => {
     try {
-        // const createWalletOption = {
-        //     method: "POST",
-        //     url: "https://api.circle.com/v1/w3s/users",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
-        //     },
-        //     data: { userId: req.user._id },
-        // };
+        const createWalletOption = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/users",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+            data: { userId: req.user._id },
+        };
 
-        // const createWalletRes = await axios.request(createWalletOption);
-        // console.log(createWalletRes);
+        const createWalletRes = await axios.request(createWalletOption);
+        console.log(createWalletRes);
 
         const AcquireSessionTokenOption = {
             method: "POST",

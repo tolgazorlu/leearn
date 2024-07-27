@@ -5,7 +5,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Link, useLocation } from "react-router-dom";
+import { a, useLocation } from "react-router-dom";
 
 import { Box, Home, Package, Settings, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,18 +15,18 @@ const Sidebar = () => {
     return (
         <div className="flex h-full max-h-screen flex-col gap-2">
             <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-                <Link
-                    to="/"
+                <a
+                    href="/"
                     className="flex items-center gap-2 font-semibold text-primary"
                 >
                     <Box className="h-6 w-6" />
                     <span className="font-bandal text-2xl mt-1">leearn</span>
-                </Link>
+                </a>
             </div>
             <div className="flex-1">
                 <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
-                    <Link
-                        to="/teacher/dashboard"
+                    <a
+                        href="/teacher/dashboard"
                         className={`${
                             pathname == "/teacher/dashboard"
                                 ? "text-primary bg-muted"
@@ -35,10 +35,10 @@ const Sidebar = () => {
                     >
                         <Home className="h-4 w-4" />
                         Dashboard
-                    </Link>
+                    </a>
 
-                    <Link
-                        to="/teacher/courses"
+                    <a
+                        href="/teacher/courses"
                         className={`${
                             pathname == "/teacher/courses"
                                 ? "text-primary bg-muted"
@@ -47,9 +47,9 @@ const Sidebar = () => {
                     >
                         <Package className="h-4 w-4" />
                         Courses{" "}
-                    </Link>
-                    <Link
-                        to="/teacher/learners"
+                    </a>
+                    <a
+                        href="/teacher/learners"
                         className={`${
                             pathname == "/teacher/learners"
                                 ? "text-primary bg-muted"
@@ -58,9 +58,9 @@ const Sidebar = () => {
                     >
                         <Users className="h-4 w-4" />
                         Students
-                    </Link>
-                    <Link
-                        to="/teacher/profile"
+                    </a>
+                    <a
+                        href="/teacher/profile"
                         className={`${
                             pathname == "/teacher/profile"
                                 ? "text-primary bg-muted"
@@ -69,7 +69,7 @@ const Sidebar = () => {
                     >
                         <Settings className="h-4 w-4" />
                         Settings
-                    </Link>
+                    </a>
                 </nav>
             </div>
             <div className="mt-auto p-4">

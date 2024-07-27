@@ -214,7 +214,7 @@ export function Learner() {
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
                 <div className="grid gap-4  md:gap-8">
-                    {wallet ? (
+                    {wallet && wallet.id !== "" ? (
                         <Card className="" x-chunk="dashboard-05-chunk-0">
                             <CardHeader className="pb-3">
                                 <CardTitle>Your Wallet</CardTitle>
