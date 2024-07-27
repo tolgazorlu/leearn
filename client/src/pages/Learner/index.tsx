@@ -2,7 +2,6 @@
 import { ArrowUpRight, Menu, Box } from "lucide-react";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -32,7 +31,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { User } from "@/contexts/User";
-import { useCreateWalletMutation } from "@/api/auth";
+import { useCreateWalletMutation, useGetUserWallet } from "@/api/auth";
 
 export function Learner() {
     const navigate = useNavigate();
@@ -111,6 +110,10 @@ export function Learner() {
     //         console.log(error);
     //     }
     // };
+
+    const { data: wallet } = useGetUserWallet();
+
+    console.log(wallet);
 
     return (
         <div className="flex min-h-screen w-full flex-col">
@@ -210,34 +213,46 @@ export function Learner() {
                 </div>
             </header>
             <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
-                <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
-                    <Card
-                        className="sm:col-span-2"
-                        x-chunk="dashboard-05-chunk-0"
-                    >
-                        <CardHeader className="pb-3">
-                            <CardTitle>Your Wallet</CardTitle>
-                            <CardDescription className="max-w-lg text-balance leading-relaxed">
-                                Create new web3 wallet for shopping. You can buy
-                                any course safetly and easily with this web3
-                                wallet.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardFooter>
-                            <Button
-                                onClick={handleCreatWallet}
-                                disabled={loading}
-                            >
-                                Create New Wallet
-                            </Button>
-                        </CardFooter>
-                    </Card>
+                <div className="grid gap-4  md:gap-8">
+                    {wallet ? (
+                        <Card className="" x-chunk="dashboard-05-chunk-0">
+                            <CardHeader className="pb-3">
+                                <CardTitle>Your Wallet</CardTitle>
+                                <CardDescription>
+                                    <br />
+                                    <div className="rounded-md border px-4 py-3 font-mono text-sm">
+                                        Wallet ID: {wallet.wallet.userId}
+                                    </div>
+                                    <br />
+                                    <div className="rounded-md border px-4 py-3 font-mono text-sm">
+                                        Wallet Address: {wallet.wallet.address}
+                                    </div>
+                                </CardDescription>
+                            </CardHeader>
+                        </Card>
+                    ) : (
+                        <Card className="" x-chunk="dashboard-05-chunk-0">
+                            <CardHeader className="pb-3">
+                                <CardTitle>Your Wallet</CardTitle>
+                                <CardDescription className="max-w-lg text-balance leading-relaxed">
+                                    Create new web3 wallet for shopping. You can
+                                    buy any course safetly and easily with this
+                                    web3 wallet.
+                                </CardDescription>
+                            </CardHeader>
+                            <CardFooter>
+                                <Button
+                                    onClick={handleCreatWallet}
+                                    disabled={loading}
+                                >
+                                    Create New Wallet
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    )}
                 </div>
-                <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-                    <Card
-                        className="xl:col-span-2"
-                        x-chunk="dashboard-01-chunk-4"
-                    >
+                <div className="grid gap-4 md:gap-8 ">
+                    <Card x-chunk="dashboard-01-chunk-4">
                         <CardHeader className="flex flex-row items-center">
                             <div className="grid gap-2">
                                 <CardTitle>Enrolled Courses</CardTitle>
@@ -256,16 +271,8 @@ export function Learner() {
                             <Table>
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Customer</TableHead>
-                                        <TableHead className="hidden xl:table-column">
-                                            Type
-                                        </TableHead>
-                                        <TableHead className="hidden xl:table-column">
-                                            Status
-                                        </TableHead>
-                                        <TableHead className="hidden xl:table-column">
-                                            Date
-                                        </TableHead>
+                                        <TableHead>Course</TableHead>
+                                        <TableHead>Enrolled Date</TableHead>
                                         <TableHead className="text-right">
                                             Amount
                                         </TableHead>
@@ -277,248 +284,34 @@ export function Learner() {
                                             <div className="font-medium">
                                                 Liam Johnson
                                             </div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                liam@example.com
-                                            </div>
                                         </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge
-                                                className="text-xs"
-                                                variant="outline"
-                                            >
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-23
-                                        </TableCell>
+                                        <TableCell>2023-06-23</TableCell>
                                         <TableCell className="text-right">
                                             $250.00
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">
-                                                Olivia Smith
-                                            </div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                olivia@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Refund
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge
-                                                className="text-xs"
-                                                variant="outline"
-                                            >
-                                                Declined
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-24
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            $150.00
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">
-                                                Noah Williams
-                                            </div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                noah@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Subscription
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge
-                                                className="text-xs"
-                                                variant="outline"
-                                            >
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-25
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            $350.00
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">
-                                                Emma Brown
-                                            </div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                emma@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge
-                                                className="text-xs"
-                                                variant="outline"
-                                            >
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-26
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            $450.00
-                                        </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">
-                                                Liam Johnson
-                                            </div>
-                                            <div className="hidden text-sm text-muted-foreground md:inline">
-                                                liam@example.com
-                                            </div>
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            Sale
-                                        </TableCell>
-                                        <TableCell className="hidden xl:table-column">
-                                            <Badge
-                                                className="text-xs"
-                                                variant="outline"
-                                            >
-                                                Approved
-                                            </Badge>
-                                        </TableCell>
-                                        <TableCell className="hidden md:table-cell lg:hidden xl:table-column">
-                                            2023-06-27
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            $550.00
                                         </TableCell>
                                     </TableRow>
                                 </TableBody>
                             </Table>
                         </CardContent>
                     </Card>
-                    <Card x-chunk="dashboard-01-chunk-5">
-                        <CardHeader>
-                            <CardTitle>Recent Purchases</CardTitle>
-                        </CardHeader>
-                        <CardContent className="grid gap-8">
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage
-                                        src="/avatars/01.png"
-                                        alt="Avatar"
-                                    />
-                                    <AvatarFallback>OM</AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        Olivia Martin
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        olivia.martin@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">
-                                    +$1,999.00
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage
-                                        src="/avatars/02.png"
-                                        alt="Avatar"
-                                    />
-                                    <AvatarFallback>JL</AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        Jackson Lee
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        jackson.lee@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">
-                                    +$39.00
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage
-                                        src="/avatars/03.png"
-                                        alt="Avatar"
-                                    />
-                                    <AvatarFallback>IN</AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        Isabella Nguyen
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        isabella.nguyen@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">
-                                    +$299.00
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage
-                                        src="/avatars/04.png"
-                                        alt="Avatar"
-                                    />
-                                    <AvatarFallback>WK</AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        William Kim
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        will@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">
-                                    +$99.00
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-4">
-                                <Avatar className="hidden h-9 w-9 sm:flex">
-                                    <AvatarImage
-                                        src="/avatars/05.png"
-                                        alt="Avatar"
-                                    />
-                                    <AvatarFallback>SD</AvatarFallback>
-                                </Avatar>
-                                <div className="grid gap-1">
-                                    <p className="text-sm font-medium leading-none">
-                                        Sofia Davis
-                                    </p>
-                                    <p className="text-sm text-muted-foreground">
-                                        sofia.davis@email.com
-                                    </p>
-                                </div>
-                                <div className="ml-auto font-medium">
-                                    +$39.00
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
                 </div>
+                <Card x-chunk="dashboard-01-chunk-5">
+                    <CardHeader>
+                        <CardTitle>Recent Purchases</CardTitle>
+                    </CardHeader>
+                    <CardContent className="grid gap-8">
+                        <div className="flex items-center gap-4">
+                            <div className="grid gap-1">
+                                <p className="text-sm font-medium leading-none">
+                                    Olivia Martin
+                                </p>
+                            </div>
+                            <div className="ml-auto font-medium">
+                                +$1,999.00
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
             </main>
         </div>
     );

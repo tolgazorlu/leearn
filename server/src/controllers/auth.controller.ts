@@ -253,6 +253,30 @@ module.exports.CreateWallet = async (req: Request, res: Response) => {
     }
 };
 
+module.exports.GetUserWallet = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const options = {
+            method: "GET",
+            url: `https://api.circle.com/v1/w3s/wallets?userId=${req.user._id}`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+        };
+        const response = await axios.request(options);
+
+        console.log(response.data.data.wallets[0]);
+
+        res.status(200).json({ wallet: response.data.data.wallets[0] });
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 // module.exports.AcquireSessionToken = async (req: Request, res: Response) => {
 //     const options = {
 //         method: "POST",

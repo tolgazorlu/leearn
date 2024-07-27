@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import apiClient from "@/utils/apiClient";
 import { UserInfo } from "@/types/UserInfo";
 
@@ -40,6 +40,12 @@ export const useCreateWalletMutation = () =>
     useMutation({
         mutationFn: async () =>
             (await apiClient.post(`auth/create_wallet`)).data,
+    });
+
+export const useGetUserWallet = () =>
+    useQuery({
+        queryKey: ["all"],
+        queryFn: async () => (await apiClient.get(`auth/get_wallet`)).data,
     });
 
 // export const useGetAcquireSessionToken = () =>
