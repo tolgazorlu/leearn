@@ -5,9 +5,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { a, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
-import { Box, Home, Package, Settings, Users } from "lucide-react";
+import { Box, Home, Package, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 const Sidebar = () => {
     const { pathname } = useLocation();
@@ -48,7 +48,7 @@ const Sidebar = () => {
                         <Package className="h-4 w-4" />
                         Courses{" "}
                     </a>
-                    <a
+                    {/* <a
                         href="/teacher/learners"
                         className={`${
                             pathname == "/teacher/learners"
@@ -58,7 +58,7 @@ const Sidebar = () => {
                     >
                         <Users className="h-4 w-4" />
                         Students
-                    </a>
+                    </a> */}
                     <a
                         href="/teacher/profile"
                         className={`${

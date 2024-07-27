@@ -10,6 +10,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Label } from "@radix-ui/react-label";
 import { Link } from "react-router-dom";
 
 export function ProfilePage() {
@@ -36,20 +37,37 @@ export function ProfilePage() {
                                 >
                                     General
                                 </Link>
-                                <Link to="#">Wallet</Link>
                             </nav>
                             <div className="grid gap-6">
                                 <Card x-chunk="dashboard-04-chunk-1">
                                     <CardHeader>
-                                        <CardTitle>Store Name</CardTitle>
+                                        <CardTitle>User Information</CardTitle>
                                         <CardDescription>
-                                            Used to identify your store in the
-                                            marketplace.
+                                            You can change your information.
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <form>
-                                            <Input placeholder="Store Name" />
+                                        <form className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <Label>Firstname</Label>
+                                                <Input />
+                                            </div>
+                                            <div>
+                                                <Label>Lastname</Label>
+                                                <Input />
+                                            </div>
+                                            <div>
+                                                <Label>Job</Label>
+                                                <Input />
+                                            </div>
+                                            <div>
+                                                <Label>Age</Label>
+                                                <Input />
+                                            </div>
+                                            <div className="col-span-2">
+                                                <Label>Education</Label>
+                                                <Input />
+                                            </div>
                                         </form>
                                     </CardContent>
                                     <CardFooter className="border-t px-6 py-4">
