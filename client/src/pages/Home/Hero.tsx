@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import HeroImage from "@/assets/hero.svg";
+import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
+    const navigate = useNavigate();
     return (
         <>
             {/* Hero */}
@@ -18,9 +20,24 @@ export default function Hero() {
                         </p>
                         {/* Buttons */}
                         <div className="mt-7 grid gap-3 w-full sm:inline-flex">
-                            <Button size={"lg"}>Get started</Button>
-                            <Button variant={"outline"} size={"lg"}>
-                                Contact sales team
+                            <Button
+                                size={"lg"}
+                                onClick={() => {
+                                    navigate("/learner/profile");
+                                }}
+                            >
+                                Get started
+                            </Button>
+                            <Button
+                                variant={"outline"}
+                                size={"lg"}
+                                onClick={() => {
+                                    navigate(
+                                        "https://github.com/tolgazorlu/leearn"
+                                    );
+                                }}
+                            >
+                                Learn more
                             </Button>
                         </div>
                         {/* End Buttons */}

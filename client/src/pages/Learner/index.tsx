@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ArrowUpRight, Menu, Box } from "lucide-react";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -119,13 +119,13 @@ export function Learner() {
         <div className="flex min-h-screen w-full flex-col">
             <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
                 <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-                    <Link
-                        to="/"
+                    <a
+                        href="/"
                         className="flex items-center gap-2 text-lg font-semibold md:text-base"
                     >
                         <Box className="h-6 w-6" />
                         <span className="sr-only">Leearn</span>
-                    </Link>
+                    </a>
                     <Link
                         to="#"
                         className="text-foreground transition-colors hover:text-foreground"
