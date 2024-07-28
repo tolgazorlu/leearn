@@ -2,25 +2,14 @@ import { Button } from "@/components/ui/button";
 import { W3SSdk } from "@circle-fin/w3s-pw-web-sdk";
 import Header from "@/components/TeacherPanel/Header";
 import Sidebar from "@/components/TeacherPanel/Sidebar";
-import { ArrowUpRight } from "lucide-react";
 
 import {
     Card,
-    CardContent,
     CardDescription,
     CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-import { Link } from "react-router-dom";
 import { useCreateWalletMutation, useGetUserWallet } from "@/api/auth";
 import { useState } from "react";
 import Transaction from "@/components/Transaction";
