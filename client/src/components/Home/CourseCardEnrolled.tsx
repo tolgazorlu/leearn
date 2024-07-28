@@ -47,7 +47,7 @@ export function CourseCardEnrolled({ course }: { course: CourseType }) {
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
                         <CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
-                        {course.firstname} {course.lastname}
+                        {course.owner.firstname} {course.owner.lastname}
                     </div>
                     <div className="flex items-center">
                         <StarIcon className="mr-1 h-3 w-3" />
