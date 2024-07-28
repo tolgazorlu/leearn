@@ -94,35 +94,19 @@ Unlock the future of the web with Leearn, the premier platform for aspiring Web3
     <li>
       <a">Features</a>
       <ul>
-        <li>Daily Countdown</li>
-        <li>New Problems</li>
-        <li>Contact with Author</li>
-        <li>FAQ List</li>
-        <li>User Register</li>
-        <li>User Email Verification</li>
-        <li>User Login</li>
-        <li>User Logout</li>
-        <li>User Solve Problem</li>
-        <li>Basic Statistics for Admin Dashboard (Total Algorithm Questions, Total Users, Day)</li>
-      </ul>
-    </li>
-    <li>
-      <a>Pages</a>
-      <ul>
-       <li>Home</li>
-       <li>Register</li>
-       <li>Login</li>
-       <li>Question</li>
-       <li>Contact</li>
-       <li>FAQ</li>
-       <li>Email Verification</li>
-       <li>404 Not Found</li>
-       <li>User Profile</li>
-       <li>Admin Dashboard</li>
-       <li>Users (Admin Dashboard)</li>
-       <li>Problems (Admin Dashboard)</li>
-       <li>Contact (Admin Dashboard)</li>
-       <li>FAQ (Admin Dashboard)</li>
+        <li>Signup</li>
+        <li>Signin</li>
+        <li>Create Course</li>
+        <li>Edit Course</li>
+        <li>Delete Course</li>
+        <li>Create Lessons</li>
+        <li>Create Wallet</li>
+        <li>Update Tokens</li>
+        <li>Get Wallet Information</li>
+        <li>Get Transactions</li>
+        <li>Enroll Course (Making transfer to Course Owner with course price!)</li>
+        <li>Get Enrolled Courses</li>
+        <li>Get Courses For Teachers</li>
       </ul>
     </li>
   </ul>
@@ -141,39 +125,39 @@ To get a local copy up and running follow these simple example steps.
 
 This is an example of how to list things you need to use the software and how to install them.
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
+-   npm
+    ```sh
+    npm install npm@latest -g
+    ```
 
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This project doesn't rely on any external dependencies or services._
 
 1. Clone the repo
-   ```sh
-   git clone https://github.com/tolgazorlu/leearn.git
-   ```
+    ```sh
+    git clone https://github.com/tolgazorlu/leearn.git
+    ```
 2. Install client packages
-   ```sh
-   cd client
-   npm install
-   npm run dev
-   ```
+    ```sh
+    cd client
+    npm install
+    npm run dev
+    ```
 3. Create '.env' file in server folder. Paste this code in file.
-   ```sh
-   PORT=8000
-   MONGO_URI=example_mongodb_url
-   BASE_CLIENT_URL=http://localhost:8080
-   BASE_SERVER_URL=http://localhost:3000
-   TOKEN_KEY=example_jwt_key
-   ```
+    ```sh
+    PORT=8000
+    MONGO_URI=example_mongodb_url
+    BASE_CLIENT_URL=http://localhost:8080
+    BASE_SERVER_URL=http://localhost:3000
+    TOKEN_KEY=example_jwt_key
+    ```
 4. Install server packages
-   ```sh
-   cd server
-   npm install
-   npm run dev
-   ```
+    ```sh
+    cd server
+    npm install
+    npm run dev
+    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -216,19 +200,19 @@ Tolga Zorlu - [@linkedin](https://www.linkedin.com/in/tolgazorlu/)
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-- [React](https://react.dev/)
-- [Vite](https://vitejs.dev/)
-- [TailwindCSS](https://tailwindcss.com/)
-- [NodeJS](https://nodejs.org/en)
-- [ExpressJS](https://expressjs.com/)
-- [MongoDB](https://www.mongodb.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [JsonWebToken](https://jwt.io/)
-- [Eslint](https://eslint.org/)
-- [React Router Dom](https://reactrouter.com/en/main)
-- [React Context](https://react.dev/reference/react/useContext)
-- [React Query](https://tanstack.com/query/v3/)
-- [DaisyUI](https://daisyui.com/)
-- [Flowbite](https://flowbite.com/)
+-   [React](https://react.dev/)
+-   [Vite](https://vitejs.dev/)
+-   [TailwindCSS](https://tailwindcss.com/)
+-   [NodeJS](https://nodejs.org/en)
+-   [ExpressJS](https://expressjs.com/)
+-   [MongoDB](https://www.mongodb.com/)
+-   [TypeScript](https://www.typescriptlang.org/)
+-   [JsonWebToken](https://jwt.io/)
+-   [Eslint](https://eslint.org/)
+-   [React Router Dom](https://reactrouter.com/en/main)
+-   [React Context](https://react.dev/reference/react/useContext)
+-   [React Query](https://tanstack.com/query/v3/)
+-   [Shadcn](https://ui.shadcn.com/)
+-   [Flowbite](https://flowbite.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
