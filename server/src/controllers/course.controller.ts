@@ -181,10 +181,7 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
         };
 
         const getBalancedRes = await axios.request(getBalancedOptions);
-        console.log(
-            "Token balances: ",
-            getBalancedRes.data.data.tokenBalances[0],
-        );
+        console.log("Token balances: ", getBalancedRes.data.data.tokenBalances);
 
         const usdc_token_id =
             getBalancedRes.data.data.tokenBalances[0].token.id;
@@ -205,8 +202,8 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
                 idempotencyKey: idempotencyKey,
                 userId: user.wallet_user_id,
                 destinationAddress: course.owner.wallet_address,
-                refId: "Circle Course Deneme",
-                amounts: ["1"],
+                refId: "Course Buy",
+                amounts: ["2"],
                 feeLevel: "HIGH",
                 tokenId: usdc_token_id,
                 walletId: user.wallet_id,
@@ -214,6 +211,7 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
         };
 
         const response = await axios.request(options);
+        console.log(response);
 
         // Check if user is already enrolled
         if (course.learners.includes(user._id)) {
