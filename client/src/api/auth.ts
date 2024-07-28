@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import apiClient from "@/utils/apiClient";
 import { UserInfo } from "@/types/UserInfo";
+import { CourseType } from "@/types/course";
 
 export const useSigninMutation = () =>
     useMutation({
@@ -42,10 +43,24 @@ export const useCreateWalletMutation = () =>
             (await apiClient.post(`auth/create_wallet`)).data,
     });
 
+export const useUpdateTokenMutation = () =>
+    useMutation({
+        mutationFn: async () =>
+            (await apiClient.post(`auth/update_token`)).data,
+    });
+
 export const useGetUserWallet = () =>
     useQuery({
         queryKey: ["all"],
         queryFn: async () => (await apiClient.get(`auth/get_wallet`)).data,
+    });
+
+export const useGetEnrolledCourses = () =>
+    useQuery({
+        queryKey: ["enrolled_courses"],
+        queryFn: async () =>
+            (await apiClient.get<CourseType[]>(`auth/get_enrolled_courses`))
+                .data,
     });
 
 // export const useGetAcquireSessionToken = () =>

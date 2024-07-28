@@ -13,5 +13,6 @@ router.get("/:course_slug/lessons", courseController.GetLessonsFromCourse); // C
 router.post("/create", Auth, courseController.CreateNewCourse); // Create a new route for signup
 router.put("/update/:slug", Auth, courseController.UpdateCourse); // Create a new route for signup
 router.delete("/delete/:slug", courseController.DeleteCourse); // Delete a course
+router.post("/enroll_course", Auth, courseController.EnrollCourse); // Create a new route for signup
 
 module.exports = router; // Export router

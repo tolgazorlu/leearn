@@ -9,7 +9,9 @@ const router: Router = require("express").Router(); // Create a new router
 
 router.post("/signup", authController.Signup); // Create a new route for signup
 router.post("/signin", authController.Signin); // Create a new route for signin
+router.get("/get_enrolled_courses", Auth, authController.GetEnrolledCourses); // Create a new route for signup
 router.post("/create_wallet", Auth, authController.CreateWallet);
+router.post("/update_token", Auth, authController.UpdateToken);
 router.get("/app_id", Auth, authController.GetAppID);
 router.get("/get_wallet", Auth, authController.GetUserWallet);
 // router.post("/acquire_session_token", Auth, authController.AcquireSessionToken);

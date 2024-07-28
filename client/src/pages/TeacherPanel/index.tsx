@@ -89,50 +89,40 @@ export function TeacherDashboard() {
                 <div className="flex min-h-screen w-full flex-col">
                     <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
                         <div className="grid gap-4  md:gap-8">
-                            {wallet && wallet.id !== "" ? (
-                                <Card
-                                    className=""
-                                    x-chunk="dashboard-05-chunk-0"
-                                >
-                                    <CardHeader className="pb-3">
-                                        <CardTitle>Your Wallet</CardTitle>
-                                        <CardDescription>
-                                            <br />
-                                            <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                                                Wallet ID:{" "}
-                                                {wallet.wallet?.userId}
-                                            </div>
-                                            <br />
-                                            <div className="rounded-md border px-4 py-3 font-mono text-sm">
-                                                Wallet Address:{" "}
-                                                {wallet.wallet?.address}
-                                            </div>
-                                        </CardDescription>
-                                    </CardHeader>
-                                </Card>
-                            ) : (
-                                <Card
-                                    className=""
-                                    x-chunk="dashboard-05-chunk-0"
-                                >
-                                    <CardHeader className="pb-3">
-                                        <CardTitle>Your Wallet</CardTitle>
-                                        <CardDescription className="max-w-lg text-balance leading-relaxed">
-                                            Create new web3 wallet for shopping.
-                                            You can buy any course safetly and
-                                            easily with this web3 wallet.
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardFooter>
-                                        <Button
-                                            onClick={handleCreatWallet}
-                                            disabled={loading}
-                                        >
-                                            Create New Wallet
-                                        </Button>
-                                    </CardFooter>
-                                </Card>
-                            )}
+                            <Card className="" x-chunk="dashboard-05-chunk-0">
+                                <CardHeader className="pb-3">
+                                    <CardTitle>Your Wallet</CardTitle>
+                                    <CardDescription className="max-w-lg text-balance leading-relaxed">
+                                        Create new web3 wallet for shopping. You
+                                        can buy any course safetly and easily
+                                        with this web3 wallet.
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardFooter>
+                                    <Button
+                                        onClick={handleCreatWallet}
+                                        disabled={loading}
+                                    >
+                                        Create New Wallet
+                                    </Button>
+                                </CardFooter>
+                            </Card>
+                            <Card className="" x-chunk="dashboard-05-chunk-0">
+                                <CardHeader className="pb-3">
+                                    <CardTitle>Your Wallet</CardTitle>
+                                    <CardDescription>
+                                        <br />
+                                        <div className="rounded-md border px-4 py-3 font-mono text-sm">
+                                            Wallet ID: {wallet?.wallet?.userId}
+                                        </div>
+                                        <br />
+                                        <div className="rounded-md border px-4 py-3 font-mono text-sm">
+                                            Wallet Address:{" "}
+                                            {wallet?.wallet?.address}
+                                        </div>
+                                    </CardDescription>
+                                </CardHeader>
+                            </Card>
                         </div>
                         <div className="grid gap-4 md:gap-8 ">
                             <Card x-chunk="dashboard-01-chunk-4">

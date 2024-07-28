@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { IUser } from "./user";
 
 // Define the course interface

@@ -9,23 +9,10 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { CourseType } from "@/types/course";
-import { useEnrollCourseMutation } from "@/api/course";
+import { useNavigate } from "react-router-dom";
 
-export function CourseCard({ course }: { course: CourseType }) {
-    const { mutateAsync: enrollCourse } = useEnrollCourseMutation();
-
-    const handleEnrollCourse = async (
-        e: React.SyntheticEvent,
-        slug: string
-    ) => {
-        e.preventDefault();
-        try {
-            const data = await enrollCourse({ course_slug: slug });
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
-    };
+export function CourseCardEnrolled({ course }: { course: CourseType }) {
+    const navigate = useNavigate();
     return (
         <Card>
             <CardHeader className="grid grid-cols-[1fr_110px] items-start gap-4 space-y-0">
@@ -49,11 +36,11 @@ export function CourseCard({ course }: { course: CourseType }) {
                     </Button>
                 )} */}
                 <Button
-                    onClick={(e) => {
-                        handleEnrollCourse(e, course.slug);
+                    onClick={() => {
+                        navigate(`/course/${course.slug}`);
                     }}
                 >
-                    Enroll
+                    Go to Course
                 </Button>
             </CardHeader>
             <CardContent>

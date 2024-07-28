@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { CourseModel } from "../models/course.model";
 import slugify from "slugify";
 import { LessonModel } from "../models/lesson.model";
+import { UserModel } from "../models/user.model";
 
 module.exports.CreateNewLesson = async (
     req: Request,

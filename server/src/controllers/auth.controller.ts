@@ -180,6 +180,7 @@ module.exports.GetAppID = async (
 };
 
 module.exports.CreateWallet = async (req: Request, res: Response) => {
+    const user_id = uuidv4();
     try {
         const createWalletOption = {
             method: "POST",
@@ -188,12 +189,105 @@ module.exports.CreateWallet = async (req: Request, res: Response) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
             },
-            data: { userId: req.user._id },
+            data: { userId: user_id },
         };
 
-        const createWalletRes = await axios.request(createWalletOption);
+        const createWalletRes = await axios
+            .request(createWalletOption)
+            .then
+            // if (user && getWalletResponse) {
+            //     user.wallet_id = getWalletResponse.data.data.wallets[0].userId;
+            //     user.wallet_address =
+            //         getWalletResponse.data.data.wallets[0].address;
+
+            //     await user.save();
+            // }
+            ();
         console.log(createWalletRes);
 
+        const AcquireSessionTokenOption = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/users/token",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+            data: { userId: user_id },
+        };
+
+        const acquireSessionRes = await axios.request(
+            AcquireSessionTokenOption,
+        );
+        const user_token = acquireSessionRes.data.data.userToken;
+        const encryption_key = acquireSessionRes.data.data.encryptionKey;
+
+        const idempotencyKey = uuidv4();
+        const initializeUserOption = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/user/initialize",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+                "X-User-Token": user_token,
+            },
+            data: {
+                idempotencyKey: idempotencyKey,
+                accountType: "SCA",
+                blockchains: ["MATIC-AMOY"],
+            },
+        };
+
+        const initializeUserRes = await axios.request(initializeUserOption);
+        const challenge_id = initializeUserRes.data.data.challengeId;
+
+        // const getWalletOption = {
+        //     method: "GET",
+        //     url: `https://api.circle.com/v1/w3s/wallets?userId=${user_id}`,
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+        //     },
+        // };
+        // const getWalletResponse = await axios.request(getWalletOption);
+
+        // console.log(getWalletResponse.data.data.wallets[0]);
+
+        await UserModel.findOneAndUpdate(
+            { _id: req.user._id },
+            {
+                wallet_user_id: user_id,
+                user_token: user_token,
+                encryption_key: encryption_key,
+                challenge_id: challenge_id,
+            },
+        );
+
+        res.status(201).json({
+            app_id: process.env.CIRCLE_APP_ID,
+            user_token: user_token,
+            encryption_key: encryption_key,
+            challenge_id: challenge_id,
+        });
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error(
+                "Axios error:",
+                error.response?.data || error.message,
+            );
+            res.status(error.response?.status || 500).json({
+                message: error.response?.data || error.message,
+            });
+        } else {
+            console.error("Unexpected error:", error);
+            res.status(500).json({
+                message: "An unexpected error occurred",
+            });
+        }
+    }
+};
+
+module.exports.UpdateToken = async (req: Request, res: Response) => {
+    try {
         const AcquireSessionTokenOption = {
             method: "POST",
             url: "https://api.circle.com/v1/w3s/users/token",
@@ -229,6 +323,15 @@ module.exports.CreateWallet = async (req: Request, res: Response) => {
         const initializeUserRes = await axios.request(initializeUserOption);
         const challenge_id = initializeUserRes.data.data.challengeId;
 
+        await UserModel.findOneAndUpdate(
+            { _id: req.user._id },
+            {
+                user_token: user_token,
+                encryption_key: encryption_key,
+                challenge_id: challenge_id,
+            },
+        );
+
         res.status(201).json({
             app_id: process.env.CIRCLE_APP_ID,
             user_token: user_token,
@@ -259,15 +362,23 @@ module.exports.GetUserWallet = async (
     next: NextFunction,
 ) => {
     try {
+        const user = await UserModel.findById(req.user._id);
         const options = {
             method: "GET",
-            url: `https://api.circle.com/v1/w3s/wallets?userId=${req.user._id}`,
+            url: `https://api.circle.com/v1/w3s/wallets?userId=${user?.wallet_user_id}`,
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
             },
         };
         const response = await axios.request(options);
+
+        if (user) {
+            user.wallet_id = response.data.data.wallets[0].userId;
+            user.wallet_address = response.data.data.wallets[0].address;
+
+            await user.save();
+        }
 
         console.log(response.data.data.wallets[0]);
 
@@ -356,3 +467,29 @@ module.exports.GetUserWallet = async (
 //         });
 //     }
 // };
+module.exports.GetEnrolledCourses = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        // Find the user and populate enrolled courses
+        const user = await UserModel.findOne({ _id: req.user._id }).populate(
+            "enrolled_courses",
+        );
+
+        if (!user) {
+            return res.status(404).json({
+                success: false,
+                message: "User not found.",
+            });
+        }
+
+        res.status(200).send(user.enrolled_courses);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: "Something went wrong!",
+        });
+    }
+};

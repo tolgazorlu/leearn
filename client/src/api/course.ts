@@ -66,3 +66,13 @@ export const useGetLessonsFromCourseQuery = (slug: string) =>
         queryFn: async () =>
             (await apiClient.get<CourseType>(`/course/${slug}/lessons`)).data,
     });
+
+export const useEnrollCourseMutation = () =>
+    useMutation({
+        mutationFn: async ({ course_slug }: { course_slug: string }) =>
+            (
+                await apiClient.post<CourseType>(`course/enroll_course`, {
+                    course_slug: course_slug,
+                })
+            ).data,
+    });

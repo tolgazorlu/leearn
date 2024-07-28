@@ -1,6 +1,7 @@
 import { LessonType } from "./lesson";
 
 export type CourseType = {
+    _id: string;
     title: string;
     firstname: string;
     lastname: string;

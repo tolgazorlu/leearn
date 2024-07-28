@@ -50,6 +50,9 @@ const UserSchema: Schema = new Schema(
         user_token: { type: String },
         encryption_key: { type: String },
         challange_id: { type: String },
+        wallet_id: { type: String },
+        wallet_address: { type: String },
+        wallet_user_id: { type: String },
     },
     {
         timestamps: true,
