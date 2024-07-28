@@ -56,6 +56,7 @@ export function EditCourse() {
 
     const [title, setTitle] = useState(course?.title || "");
     const [price, setPrice] = useState(course?.price || "");
+    const [slugg, setSlugg] = useState(course?.slug || "");
     const [description, setDescription] = useState(course?.description || "");
 
     const [lessonTitle, setLessonTitle] = useState("");
@@ -114,7 +115,7 @@ export function EditCourse() {
             await updateCourse({
                 title: title,
                 price: typeof price === "string" ? parseInt(price) : price,
-                slug: slug,
+                slug: slugg,
                 description: description,
             });
         } catch (error) {
@@ -179,6 +180,9 @@ export function EditCourse() {
                                                 type="text"
                                                 name="slug"
                                                 value={slug}
+                                                onChange={(e) =>
+                                                    setSlugg(e.target.value)
+                                                }
                                                 placeholder="Course Slug"
                                                 readOnly
                                             />
