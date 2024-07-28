@@ -10,6 +10,6 @@ export default defineConfig({
         },
     },
     define: {
-        "process.env": import.meta,
+        "process.env": {},
     },
 });
