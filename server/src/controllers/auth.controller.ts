@@ -47,16 +47,17 @@ module.exports.Signup = async (
                 email: email,
                 password: bcrypt.hashSync(password, 10),
                 verificationToken: verificationToken,
+                email_verified: true,
             }); // Create a new user
             return user; // Return the user
         };
 
         const emailToken = randomString(20); // Generate a random string of length 20
-        const newUser = await addUser(req.body.email, emailToken); // Add a new user
+        await addUser(req.body.email, emailToken); // Add a new user
 
-        const link = `${process.env.CLIENT_BASE}${newUser._id}/verify/${emailToken}`; // Create a verification link
+        // const link = `${process.env.CLIENT_BASE}${newUser._id}/verify/${emailToken}`; // Create a verification link
 
-        verifyEmail(email, link); // Send a verification email
+        // verifyEmail(email, link); // Send a verification email
 
         res.status(201).json({
             success: true,
@@ -374,7 +375,7 @@ module.exports.GetUserWallet = async (
         const response = await axios.request(options);
 
         if (user) {
-            user.wallet_id = response.data.data.wallets[0].userId;
+            user.wallet_id = response.data.data.wallets[0].id;
             user.wallet_address = response.data.data.wallets[0].address;
 
             await user.save();

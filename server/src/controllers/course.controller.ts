@@ -1,8 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import { CourseModel } from "../models/course.model";
 import slugify from "slugify";
-import { Message } from "node-mailjet";
 import { UserModel } from "../models/user.model";
+const { v4: uuidv4 } = require("uuid");
+import axios from "axios";
 
 module.exports.CreateNewCourse = async (
     req: Request,
@@ -120,6 +121,29 @@ module.exports.UpdateCourse = async (req: Request, res: Response) => {
     }
 };
 
+// module.exports.GetBalanced = async (req: Request, res: Response) => {
+//     try {
+//         const user = await UserModel.findById(req.user._id);
+
+//         const options = {
+//             method: "GET",
+//             url: `https://api.circle.com/v1/w3s/wallets/${user?.wallet_id}/balances`,
+//             headers: {
+//                 "Content-Type": "application/json",
+//                 Authorization: `Bearer ${process.env.NEXT_PUBLIC_API_KEY}`,
+//             },
+//         };
+
+//         const response = await axios.request(options);
+//         console.log(response);
+//     } catch (error) {
+//         return res.status(404).json({
+//             success: false,
+//             message: error,
+//         });
+//     }
+// };
+
 module.exports.EnrollCourse = async (req: Request, res: Response) => {
     try {
         // Validate request parameters
@@ -127,7 +151,9 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
         const userId = req.user._id;
 
         // Fetch course by slug
-        const course = await CourseModel.findOne({ slug: course_slug });
+        const course = await CourseModel.findOne({
+            slug: course_slug,
+        }).populate("owner");
         if (!course) {
             return res.status(404).json({
                 success: false,
@@ -143,6 +169,51 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
                 message: "User not found.",
             });
         }
+
+        // Get user's wallet balance
+        const getBalancedOptions = {
+            method: "GET",
+            url: `https://api.circle.com/v1/w3s/wallets/${user.wallet_id}/balances`,
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+        };
+
+        const getBalancedRes = await axios.request(getBalancedOptions);
+        console.log(
+            "Token balances: ",
+            getBalancedRes.data.data.tokenBalances[0],
+        );
+
+        const usdc_token_id =
+            getBalancedRes.data.data.tokenBalances[0].token.id;
+        console.log("udsctoken:", usdc_token_id);
+
+        const idempotencyKey = uuidv4();
+
+        // Transfer transaction to course owner
+        const options = {
+            method: "POST",
+            url: "https://api.circle.com/v1/w3s/user/transactions/transfer",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+                "X-User-Token": user.user_token,
+            },
+            data: {
+                idempotencyKey: idempotencyKey,
+                userId: user.wallet_user_id,
+                destinationAddress: course.owner.wallet_address,
+                refId: "Circle Course Deneme",
+                amounts: ["1"],
+                feeLevel: "HIGH",
+                tokenId: usdc_token_id,
+                walletId: user.wallet_id,
+            },
+        };
+
+        const response = await axios.request(options);
 
         // Check if user is already enrolled
         if (course.learners.includes(user._id)) {
@@ -165,9 +236,10 @@ module.exports.EnrollCourse = async (req: Request, res: Response) => {
             course,
         });
     } catch (error) {
+        console.error("Internal server error:", error);
         res.status(500).json({
             success: false,
-            message: error, // Access the error message property
-        }); // 500 Internal Server Error
+            message: error || "Internal Server Error",
+        });
     }
 };
