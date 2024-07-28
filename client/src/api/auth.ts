@@ -63,6 +63,13 @@ export const useGetEnrolledCourses = () =>
                 .data,
     });
 
+export const useGetTransactions = () =>
+    useQuery({
+        queryKey: ["transactions"],
+        queryFn: async () =>
+            (await apiClient.get(`auth/get_transactions`)).data,
+    });
+
 // export const useGetAcquireSessionToken = () =>
 //     useMutation({
 //         mutationFn: async () =>

@@ -31,7 +31,13 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { User } from "@/contexts/User";
-import { useCreateWalletMutation, useGetUserWallet } from "@/api/auth";
+import {
+    useCreateWalletMutation,
+    useGetEnrolledCourses,
+    useGetUserWallet,
+    useUpdateTokenMutation,
+} from "@/api/auth";
+import Transaction from "@/components/Transaction";
 
 export function Learner() {
     const navigate = useNavigate();
@@ -51,6 +57,17 @@ export function Learner() {
     const [loading, setLoading] = useState(false);
 
     const { mutateAsync: createWallet } = useCreateWalletMutation();
+    const { mutateAsync: updateWallet } = useUpdateTokenMutation();
+    const { data: enrolledCourses } = useGetEnrolledCourses();
+
+    const handleUpdateTokens = async () => {
+        try {
+            const data = await updateWallet();
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const handleCreatWallet = async () => {
         const data = await createWallet();
@@ -240,12 +257,22 @@ export function Learner() {
                             </CardDescription>
                         </CardHeader>
                         <CardFooter>
-                            <Button
-                                onClick={handleCreatWallet}
-                                disabled={loading}
-                            >
-                                Create New Wallet
-                            </Button>
+                            <div className="flex gap-4">
+                                {" "}
+                                <Button
+                                    variant={"outline"}
+                                    onClick={handleCreatWallet}
+                                    disabled={loading}
+                                >
+                                    Create New Wallet
+                                </Button>
+                                <Button
+                                    onClick={handleUpdateTokens}
+                                    disabled={loading}
+                                >
+                                    Update Wallet Tokens
+                                </Button>
+                            </div>
                         </CardFooter>
                     </Card>
                 </div>
@@ -270,46 +297,40 @@ export function Learner() {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Course</TableHead>
-                                        <TableHead>Enrolled Date</TableHead>
+                                        <TableHead>Amount</TableHead>
+                                        <TableHead>Url Link</TableHead>
                                         <TableHead className="text-right">
-                                            Amount
+                                            Action
                                         </TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    <TableRow>
-                                        <TableCell>
-                                            <div className="font-medium">
-                                                Liam Johnson
-                                            </div>
-                                        </TableCell>
-                                        <TableCell>2023-06-23</TableCell>
-                                        <TableCell className="text-right">
-                                            $250.00
-                                        </TableCell>
-                                    </TableRow>
+                                    {enrolledCourses?.map((item, index) => {
+                                        return (
+                                            <TableRow key={index}>
+                                                <TableCell>
+                                                    <div className="font-medium">
+                                                        {item.title}
+                                                    </div>
+                                                </TableCell>
+                                                <TableCell>
+                                                    {item.price || "---------"}
+                                                </TableCell>
+                                                <TableCell>
+                                                    {item.slug}
+                                                </TableCell>
+                                                <TableCell className="text-right">
+                                                    <Button>Go Course</Button>
+                                                </TableCell>
+                                            </TableRow>
+                                        );
+                                    })}
                                 </TableBody>
                             </Table>
                         </CardContent>
                     </Card>
                 </div>
-                <Card x-chunk="dashboard-01-chunk-5">
-                    <CardHeader>
-                        <CardTitle>Recent Purchases</CardTitle>
-                    </CardHeader>
-                    <CardContent className="grid gap-8">
-                        <div className="flex items-center gap-4">
-                            <div className="grid gap-1">
-                                <p className="text-sm font-medium leading-none">
-                                    Olivia Martin
-                                </p>
-                            </div>
-                            <div className="ml-auto font-medium">
-                                +$1,999.00
-                            </div>
-                        </div>
-                    </CardContent>
-                </Card>
+                <Transaction />
             </main>
         </div>
     );

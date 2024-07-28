@@ -23,6 +23,7 @@ import {
 import { Link } from "react-router-dom";
 import { useCreateWalletMutation, useGetUserWallet } from "@/api/auth";
 import { useState } from "react";
+import Transaction from "@/components/Transaction";
 
 export function TeacherDashboard() {
     const { data: wallet } = useGetUserWallet();
@@ -124,75 +125,7 @@ export function TeacherDashboard() {
                                 </CardHeader>
                             </Card>
                         </div>
-                        <div className="grid gap-4 md:gap-8 ">
-                            <Card x-chunk="dashboard-01-chunk-4">
-                                <CardHeader className="flex flex-row items-center">
-                                    <div className="grid gap-2">
-                                        <CardTitle>Enrolled Courses</CardTitle>
-                                        <CardDescription>
-                                            Recent transactions from your store.
-                                        </CardDescription>
-                                    </div>
-                                    <Button
-                                        asChild
-                                        size="sm"
-                                        className="ml-auto gap-1"
-                                    >
-                                        <Link to="#">
-                                            View All
-                                            <ArrowUpRight className="h-4 w-4" />
-                                        </Link>
-                                    </Button>
-                                </CardHeader>
-                                <CardContent>
-                                    <Table>
-                                        <TableHeader>
-                                            <TableRow>
-                                                <TableHead>Course</TableHead>
-                                                <TableHead>
-                                                    Enrolled Date
-                                                </TableHead>
-                                                <TableHead className="text-right">
-                                                    Amount
-                                                </TableHead>
-                                            </TableRow>
-                                        </TableHeader>
-                                        <TableBody>
-                                            <TableRow>
-                                                <TableCell>
-                                                    <div className="font-medium">
-                                                        Liam Johnson
-                                                    </div>
-                                                </TableCell>
-                                                <TableCell>
-                                                    2023-06-23
-                                                </TableCell>
-                                                <TableCell className="text-right">
-                                                    $250.00
-                                                </TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    </Table>
-                                </CardContent>
-                            </Card>
-                        </div>
-                        <Card x-chunk="dashboard-01-chunk-5">
-                            <CardHeader>
-                                <CardTitle>Recent Purchases</CardTitle>
-                            </CardHeader>
-                            <CardContent className="grid gap-8">
-                                <div className="flex items-center gap-4">
-                                    <div className="grid gap-1">
-                                        <p className="text-sm font-medium leading-none">
-                                            Olivia Martin
-                                        </p>
-                                    </div>
-                                    <div className="ml-auto font-medium">
-                                        +$1,999.00
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <Transaction />
                     </main>
                 </div>
             </div>

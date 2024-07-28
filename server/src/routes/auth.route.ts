@@ -14,6 +14,7 @@ router.post("/create_wallet", Auth, authController.CreateWallet);
 router.post("/update_token", Auth, authController.UpdateToken);
 router.get("/app_id", Auth, authController.GetAppID);
 router.get("/get_wallet", Auth, authController.GetUserWallet);
+router.get("/get_transactions", Auth, authController.GetAllTransactions);
 // router.post("/acquire_session_token", Auth, authController.AcquireSessionToken);
 // router.post("/initialize_user", Auth, authController.InitializeUser);
 

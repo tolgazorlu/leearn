@@ -288,6 +288,7 @@ module.exports.CreateWallet = async (req: Request, res: Response) => {
 };
 
 module.exports.UpdateToken = async (req: Request, res: Response) => {
+    const user = await UserModel.findById(req.user._id);
     try {
         const AcquireSessionTokenOption = {
             method: "POST",
@@ -296,7 +297,7 @@ module.exports.UpdateToken = async (req: Request, res: Response) => {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
             },
-            data: { userId: req.user._id },
+            data: { userId: user?.wallet_user_id },
         };
 
         const acquireSessionRes = await axios.request(
@@ -305,31 +306,31 @@ module.exports.UpdateToken = async (req: Request, res: Response) => {
         const user_token = acquireSessionRes.data.data.userToken;
         const encryption_key = acquireSessionRes.data.data.encryptionKey;
 
-        const idempotencyKey = uuidv4();
-        const initializeUserOption = {
-            method: "POST",
-            url: "https://api.circle.com/v1/w3s/user/initialize",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
-                "X-User-Token": user_token,
-            },
-            data: {
-                idempotencyKey: idempotencyKey,
-                accountType: "SCA",
-                blockchains: ["MATIC-AMOY"],
-            },
-        };
+        // const idempotencyKey = uuidv4();
+        // const initializeUserOption = {
+        //     method: "POST",
+        //     url: "https://api.circle.com/v1/w3s/user/initialize",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+        //         "X-User-Token": user_token,
+        //     },
+        //     data: {
+        //         idempotencyKey: idempotencyKey,
+        //         accountType: "SCA",
+        //         blockchains: ["MATIC-AMOY"],
+        //     },
+        // };
 
-        const initializeUserRes = await axios.request(initializeUserOption);
-        const challenge_id = initializeUserRes.data.data.challengeId;
+        // const initializeUserRes = await axios.request(initializeUserOption);
+        // const challenge_id = initializeUserRes.data.data.challengeId;
 
         await UserModel.findOneAndUpdate(
             { _id: req.user._id },
             {
                 user_token: user_token,
                 encryption_key: encryption_key,
-                challenge_id: challenge_id,
+                // challenge_id: challenge_id,
             },
         );
 
@@ -337,7 +338,7 @@ module.exports.UpdateToken = async (req: Request, res: Response) => {
             app_id: process.env.CIRCLE_APP_ID,
             user_token: user_token,
             encryption_key: encryption_key,
-            challenge_id: challenge_id,
+            // challenge_id: challenge_id,
         });
     } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -487,6 +488,31 @@ module.exports.GetEnrolledCourses = async (
         }
 
         res.status(200).send(user.enrolled_courses);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: "Something went wrong!",
+        });
+    }
+};
+
+module.exports.GetAllTransactions = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const options = {
+            method: "GET",
+            url: "https://api.circle.com/v1/w3s/transactions",
+            headers: {
+                accept: "application/json",
+                authorization: `Bearer ${process.env.CIRCLE_API_KEY}`,
+            },
+        };
+
+        const response = await axios.request(options);
+        res.status(200).json(response.data.data.transactions);
     } catch (error) {
         res.status(400).json({
             success: false,
