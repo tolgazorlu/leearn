@@ -147,10 +147,17 @@ _Below is an example of how you can instruct your audience on installing and set
 3. Create '.env' file in server folder. Paste this code in file.
     ```sh
     PORT=8000
-    MONGO_URI=example_mongodb_url
-    BASE_CLIENT_URL=http://localhost:8080
-    BASE_SERVER_URL=http://localhost:3000
-    TOKEN_KEY=example_jwt_key
+    MONGO_URI=MongoURI
+    CLIENT_BASE_URL=http://localhost:5173
+    BASE_SERVER_URL=http://localhost:8000
+    TOKEN_KEY=secret_key
+    EMAIL_LINK=http://localhost:5173/
+    EMAIL_ACCOUNT=e@mail.com
+    EMAIL_NAME=mail_name
+    MJ_APIKEY_PUBLIC=public_key
+    MJ_APIKEY_PRIVATE=private_key
+    CIRCLE_API_KEY=api_key
+    CIRCLE_APP_ID=app_id
     ```
 4. Install server packages
     ```sh
