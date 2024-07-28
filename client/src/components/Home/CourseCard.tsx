@@ -65,7 +65,7 @@ export function CourseCard({ course }: { course: CourseType }) {
                     </div>
                     <div className="flex items-center">
                         <Banknote className="mr-1 h-3 w-3" />
-                        {course.price}
+                        {course.price} USDC
                     </div>
                     <div>Created At: {course.createdAt.slice(0, 10)}</div>
                 </div>
