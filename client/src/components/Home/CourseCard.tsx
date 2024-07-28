@@ -1,4 +1,4 @@
-import { CircleIcon, StarIcon } from "@radix-ui/react-icons";
+import { CircleIcon } from "@radix-ui/react-icons";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { CourseType } from "@/types/course";
 import { useEnrollCourseMutation } from "@/api/course";
+import { Banknote } from "lucide-react";
 
 export function CourseCard({ course }: { course: CourseType }) {
     const { mutateAsync: enrollCourse } = useEnrollCourseMutation();
@@ -60,13 +61,13 @@ export function CourseCard({ course }: { course: CourseType }) {
                 <div className="flex space-x-4 text-sm text-muted-foreground">
                     <div className="flex items-center">
                         <CircleIcon className="mr-1 h-3 w-3 fill-sky-400 text-sky-400" />
-                        {course.firstname} {course.lastname}
+                        {course.owner.firstname} {course.owner.lastname}
                     </div>
                     <div className="flex items-center">
-                        <StarIcon className="mr-1 h-3 w-3" />
-                        20k
+                        <Banknote className="mr-1 h-3 w-3" />
+                        {course.price}
                     </div>
-                    <div>Updated April 2023</div>
+                    <div>Created At: {course.createdAt.slice(0, 10)}</div>
                 </div>
             </CardContent>
         </Card>

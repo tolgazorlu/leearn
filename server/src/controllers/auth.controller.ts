@@ -520,3 +520,39 @@ module.exports.GetAllTransactions = async (
         });
     }
 };
+
+module.exports.UpdateProfile = async (req: Request, res: Response) => {
+    try {
+        const { firstname, lastname, job, age, education } = req.body;
+        await UserModel.findByIdAndUpdate(req.user._id, {
+            firstname: firstname,
+            lastname: lastname,
+            job: job,
+            age: age,
+            education: education,
+        });
+
+        res.status(200).json({
+            success: true,
+            message: "User profile updated successfully!",
+        });
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: "Something went wrong!",
+        });
+    }
+};
+
+module.exports.GetUserInfo = async (req: Request, res: Response) => {
+    try {
+        const user = await UserModel.findById(req.user._id);
+
+        res.status(200).json(user);
+    } catch (error) {
+        res.status(400).json({
+            success: false,
+            message: "Something went wrong!",
+        });
+    }
+};

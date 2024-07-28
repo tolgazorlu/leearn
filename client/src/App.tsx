@@ -9,6 +9,7 @@ import { ProfilePage } from "./pages/TeacherPanel/Profile";
 import { EditCourse } from "./pages/TeacherPanel/EditCourse";
 import LearnerRoute from "./routes/LearnerRoute";
 import { Learner } from "./pages/Learner";
+import Profile from "./pages/Learner/Profile";
 function App() {
     return (
         <BrowserRouter>
@@ -24,6 +25,7 @@ function App() {
                 </Route>
                 <Route path="/learner" element={<LearnerRoute />}>
                     <Route path="profile" element={<Learner />} />
+                    <Route path="settings" element={<Profile />} />
                 </Route>
                 {/* Catch-all route */}
                 {/* <Route path="*" element={<ErrorPage />} /> */}

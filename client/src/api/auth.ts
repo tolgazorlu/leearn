@@ -86,3 +86,34 @@ export const useGetTransactions = () =>
 //     useMutation({
 //         mutationFn: async () => (await apiClient.post(`auth/app_id`, {})).data,
 //     });
+export const useUpdateProfileMutation = () =>
+    useMutation({
+        mutationFn: async ({
+            firstname,
+            lastname,
+            age,
+            job,
+            education,
+        }: {
+            firstname: string;
+            lastname: string;
+            age: number;
+            job: string;
+            education: string;
+        }) =>
+            (
+                await apiClient.put(`auth/update_profile`, {
+                    firstname,
+                    lastname,
+                    job,
+                    age,
+                    education,
+                })
+            ).data,
+    });
+
+export const useGetUserInfo = () =>
+    useQuery({
+        queryKey: ["user-info"],
+        queryFn: async () => (await apiClient.get(`auth/user_info`)).data,
+    });

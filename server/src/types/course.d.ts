@@ -12,4 +12,5 @@ interface ICourse extends Document {
     learners: IUser[];
     categories: ICategory[];
     lessons: ILesson[];
+    price: number;
 }

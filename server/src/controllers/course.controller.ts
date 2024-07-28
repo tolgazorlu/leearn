@@ -98,15 +98,16 @@ module.exports.DeleteCourse = async (req: Request, res: Response) => {
 module.exports.UpdateCourse = async (req: Request, res: Response) => {
     try {
         const { title, price, slug, description } = req.body;
-        const course = CourseModel.findOneAndUpdate(
-            { slug: req.params.slug },
-            {
-                title: title,
-                price: price,
-                slug: slug,
-                description: description,
-            },
-        );
+        const course = await CourseModel.findOne({ slug: req.params.slug });
+
+        if (course) {
+            course.title = title;
+            course.price = price;
+            course.slug = slug;
+            course.description = description;
+
+            course.save();
+        }
 
         res.status(200).json({
             success: true,

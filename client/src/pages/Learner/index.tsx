@@ -144,13 +144,13 @@ export function Learner() {
                         <span className="sr-only">Leearn</span>
                     </a>
                     <Link
-                        to="#"
+                        to="/learner/profile"
                         className="text-foreground transition-colors hover:text-foreground"
                     >
                         Profile
                     </Link>
                     <Link
-                        to="#"
+                        to="/learner/settings"
                         className="text-foreground transition-colors hover:text-foreground"
                     >
                         Settings

@@ -55,7 +55,7 @@ export function EditCourse() {
     const { mutateAsync: deleteLesson } = useDeleteLessonMutation();
 
     const [title, setTitle] = useState(course?.title || "");
-    const [price, setPrice] = useState(course?.price || "");
+    const [price, setPrice] = useState<number>(0);
     const [slugg, setSlugg] = useState(course?.slug || "");
     const [description, setDescription] = useState(course?.description || "");
 
@@ -76,6 +76,7 @@ export function EditCourse() {
         if (course) {
             setTitle(course.title);
             setPrice(course.price);
+            setSlugg(course.slug);
             setDescription(course.description);
         }
     }, [course, setTitle]);
@@ -114,7 +115,7 @@ export function EditCourse() {
         try {
             await updateCourse({
                 title: title,
-                price: typeof price === "string" ? parseInt(price) : price,
+                price: price,
                 slug: slugg,
                 description: description,
             });
@@ -164,10 +165,15 @@ export function EditCourse() {
                                             <Input
                                                 id="price"
                                                 name="price"
+                                                type="number"
                                                 value={price}
                                                 placeholder="Course Price"
                                                 onChange={(e) =>
-                                                    setPrice(e.target.value)
+                                                    setPrice(
+                                                        parseFloat(
+                                                            e.target.value
+                                                        )
+                                                    )
                                                 }
                                             />
                                         </div>
@@ -178,13 +184,12 @@ export function EditCourse() {
                                             <Input
                                                 id="slug"
                                                 type="text"
-                                                name="slug"
-                                                value={slug}
+                                                name="slugg"
+                                                value={slugg}
                                                 onChange={(e) =>
                                                     setSlugg(e.target.value)
                                                 }
                                                 placeholder="Course Slug"
-                                                readOnly
                                             />
                                         </div>
                                         <div className="grid gap-3">

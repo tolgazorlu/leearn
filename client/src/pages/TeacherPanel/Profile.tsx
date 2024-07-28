@@ -1,3 +1,4 @@
+import { useGetUserInfo, useUpdateProfileMutation } from "@/api/auth";
 import Header from "@/components/TeacherPanel/Header";
 import Sidebar from "@/components/TeacherPanel/Sidebar";
 import { Button } from "@/components/ui/button";
@@ -11,9 +12,46 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@radix-ui/react-label";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export function ProfilePage() {
+    const { data: user } = useGetUserInfo();
+    const { mutateAsync: updateUser } = useUpdateProfileMutation();
+
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [job, setJob] = useState("");
+    const [age, setAge] = useState(0);
+    const [education, setEducation] = useState("");
+
+    useEffect(() => {
+        if (user) {
+            setFirstname(user.firstname);
+            setLastname(user.lastname);
+            setJob(user.job);
+            setAge(user.age);
+            setEducation(user.education);
+        }
+    }, [user]);
+
+    const handleUpdateProfile = async (event: React.SyntheticEvent) => {
+        event.preventDefault();
+
+        try {
+            const data = updateUser({
+                firstname: firstname,
+                lastname: lastname,
+                job: job,
+                age: age,
+                education: education,
+            });
+            console.log(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
             <div className="hidden border-r bg-muted/40 md:block">
@@ -50,48 +88,76 @@ export function ProfilePage() {
                                         <form className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <Label>Firstname</Label>
-                                                <Input />
+                                                <Input
+                                                    id="firstname"
+                                                    name="firstname"
+                                                    value={firstname}
+                                                    onChange={(e) =>
+                                                        setFirstname(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
                                             </div>
                                             <div>
                                                 <Label>Lastname</Label>
-                                                <Input />
+                                                <Input
+                                                    id="lastname"
+                                                    name="lastname"
+                                                    value={lastname}
+                                                    onChange={(e) =>
+                                                        setLastname(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
                                             </div>
                                             <div>
                                                 <Label>Job</Label>
-                                                <Input />
+                                                <Input
+                                                    id="job"
+                                                    name="job"
+                                                    value={job}
+                                                    onChange={(e) =>
+                                                        setJob(e.target.value)
+                                                    }
+                                                />
                                             </div>
                                             <div>
                                                 <Label>Age</Label>
-                                                <Input />
+                                                <Input
+                                                    id="age"
+                                                    name="age"
+                                                    type="number"
+                                                    value={age}
+                                                    onChange={(e) =>
+                                                        setAge(
+                                                            parseFloat(
+                                                                e.target.value
+                                                            )
+                                                        )
+                                                    }
+                                                />
                                             </div>
                                             <div className="col-span-2">
                                                 <Label>Education</Label>
-                                                <Input />
+                                                <Input
+                                                    id="education"
+                                                    name="education"
+                                                    value={education}
+                                                    onChange={(e) =>
+                                                        setEducation(
+                                                            e.target.value
+                                                        )
+                                                    }
+                                                />
                                             </div>
                                         </form>
                                     </CardContent>
                                     <CardFooter className="border-t px-6 py-4">
-                                        <Button>Save</Button>
-                                    </CardFooter>
-                                </Card>
-                                <Card x-chunk="dashboard-04-chunk-2">
-                                    <CardHeader>
-                                        <CardTitle>Plugins Directory</CardTitle>
-                                        <CardDescription>
-                                            The directory within your project,
-                                            in which your plugins are located.
-                                        </CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <form className="flex flex-col gap-4">
-                                            <Input
-                                                placeholder="Project Name"
-                                                defaultValue="/content/plugins"
-                                            />
-                                        </form>
-                                    </CardContent>
-                                    <CardFooter className="border-t px-6 py-4">
-                                        <Button>Save</Button>
+                                        <Button onClick={handleUpdateProfile}>
+                                            Save
+                                        </Button>
                                     </CardFooter>
                                 </Card>
                             </div>
