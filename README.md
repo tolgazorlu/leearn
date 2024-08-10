@@ -219,6 +219,5 @@ Use this space to list resources you find helpful and would like to give credit 
 -   [React Context](https://react.dev/reference/react/useContext)
 -   [React Query](https://tanstack.com/query/v3/)
 -   [Shadcn](https://ui.shadcn.com/)
--   [Flowbite](https://flowbite.com/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
