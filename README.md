@@ -12,7 +12,6 @@
   <p align="center">
     BY TOLGA ZORLU
     <br />
-    <a href="https://leearn.vercel.app"><strong>Go to the Leearn!</strong></a>
     <br />
     <br />
     <a href="https://github.com/tolgazorlu/leearn/issues/new">Report Bug</a>
