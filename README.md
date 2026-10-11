@@ -91,7 +91,6 @@ Unlock the future of the web with Leearn, the premier platform for aspiring Web3
   <summary>Features</summary>
   <ul>
     <li>
-      <a">Features</a>
       <ul>
         <li>Signup</li>
         <li>Signin</li>
@@ -117,12 +116,10 @@ Unlock the future of the web with Leearn, the premier platform for aspiring Web3
 
 ## Getting Started
 
-This is an MERN Stack example of e-commerce project.
+Leearn is a MERN-stack Web3 learning platform: a React/TypeScript client and an Express/TypeScript server with MongoDB and Circle-powered crypto wallets.
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
 
 -   npm
     ```sh
@@ -131,36 +128,34 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-_Below is an example of how you can instruct your audience on installing and setting up your app. This project doesn't rely on any external dependencies or services._
-
 1. Clone the repo
     ```sh
     git clone https://github.com/tolgazorlu/leearn.git
     ```
-2. Install client packages
+2. Create a `.env` file in the `server` folder with these keys (see `.env.example`):
     ```sh
-    cd client
+    PORT=
+    MONGO_URI=
+    CLIENT_BASE_URL=
+    BASE_SERVER_URL=
+    TOKEN_KEY=
+    EMAIL_LINK=
+    EMAIL_ACCOUNT=
+    EMAIL_NAME=
+    MJ_APIKEY_PUBLIC=
+    MJ_APIKEY_PRIVATE=
+    CIRCLE_API_KEY=
+    CIRCLE_APP_ID=
+    ```
+3. Install and run the server
+    ```sh
+    cd server
     npm install
     npm run dev
     ```
-3. Create '.env' file in server folder. Paste this code in file.
+4. Install and run the client
     ```sh
-    PORT=8000
-    MONGO_URI=MongoURI
-    CLIENT_BASE_URL=http://localhost:5173
-    BASE_SERVER_URL=http://localhost:8000
-    TOKEN_KEY=secret_key
-    EMAIL_LINK=http://localhost:5173/
-    EMAIL_ACCOUNT=e@mail.com
-    EMAIL_NAME=mail_name
-    MJ_APIKEY_PUBLIC=public_key
-    MJ_APIKEY_PRIVATE=private_key
-    CIRCLE_API_KEY=api_key
-    CIRCLE_APP_ID=app_id
-    ```
-4. Install server packages
-    ```sh
-    cd server
+    cd client
     npm install
     npm run dev
     ```
@@ -191,6 +186,10 @@ Don't forget to give the project a star! Thanks again!
 Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Status
+
+Learning project, not actively maintained.
 
 <!-- CONTACT -->
 
